@@ -1,29 +1,15 @@
-# Global Getaway ✨
+# Expo Router Example
 
-### Sobre o app:
+Use [`expo-router`](https://expo.github.io/router) to build native navigation using files in the `app/` directory.
 
-A Global Getaway é uma agência de viagens emergente no mercado e vem para revolucionar o 
-exaustivo processo de fechar pacotes de viagens, proporcionando uma excelente e agradável 
-experiência no contrato de um combo de lazer para aproveitar as férias da melhor maneira 
-possível.
+## 🚀 How to use
 
-### Requisitos:
+```sh
+npx create-react-native-app -t with-router
+```
 
-Para começar a colocar a ideia em prática, a equipe de marketing, após várias sessões de 
-brainstorming, reuniu-se com o time de desenvolvimento para definição dos requisitos do 
-aplicativo mobile:
+## 📝 Notes
 
-ID | Descrição | Status |
----|-----------|--------|
-#1 | CRUD de pontos turísticos | 🚧
-#2 | CRUD de hotéis | 🚧
-#3 | CRUD de pacotes (passagem, hotel e pontos turísticos) | 🚧
-#4 | CRUD de usuários | 🚧
-#5 | Histórico de pacotes comprados pelo usuário | 🚧
-#6 | Salvar pacotes numa categoria de ‘Ver depois/Favoritos’ | 🚧
-
-> Maria Clara Alves de Faria 
->
-> Mariana Ayumi Tamay
->
-> Programação para Dispositivos Móveis - 4°SEM/DSM
+- [Expo Router: Docs](https://expo.github.io/router)
+- [Expo Router: Repo](https://github.com/expo/router)
+- [Request for Comments](https://github.com/expo/router/discussions/1)

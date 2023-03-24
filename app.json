@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "scheme": "GlobalGetaway",
+    "web": {
+      "bundler": "metro"
+    },
+    "name": "GlobalGetaway",
+    "slug": "GlobalGetaway",
+    "main": "index.js"
+  }
+}
