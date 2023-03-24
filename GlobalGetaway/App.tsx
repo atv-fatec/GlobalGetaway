@@ -1,13 +1,12 @@
-import React, { useState } from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import Routes from "./src/app/routes/index";
-import Login from "./src/app/pages/login";
+import React from "react";
+
+import Login from "./app/screens/login";
+import SignUp from "./app/screens/signup";
+import Home from "./app/screens/home";
+import CriarPonto from "./app/screens/criar-ponto";
 
 export default function App() {
     return (
-        <NavigationContainer>
-            {/*<Routes />*/}
-            <Login />
-        </NavigationContainer>
-    );
-}
+        <Home />
+    )
+};

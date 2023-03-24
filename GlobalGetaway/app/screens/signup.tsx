@@ -8,43 +8,39 @@ import { Body,
         ButtonText, 
         Container, 
         Input, 
-        LoginText, 
-        LogoText 
-} from "../styles/login";
+        LoginText,  
+} from "../styles/signup";
 
-export default function Login() {
-
+export default function SignUp() {
     const [showPassword, setShowPassword] = useState(false);
 
     return (
         <Body>
             <Container>
-                <LogoText>Global Getaway 🌎</LogoText>
+                <LoginText>Sign Up</LoginText>
 
-                <LoginText>Login</LoginText>
-
-                <Input 
+                <Input
                     placeholder="E-mail"
-                    placeholderTextColor="#FCF5EF"
+                    placeholderTextColor="#37BBCA"
                     keyboardType="email-address"
                 />
 
-                <Input 
+                <Input
                     placeholder="Senha"
-                    placeholderTextColor="#FCF5EF"
+                    placeholderTextColor="#37BBCA"
                     keyboardType="default"
                     secureTextEntry={!showPassword}
                 />
 
                 <ButtonPassword onPress={() => setShowPassword(!showPassword)}>
                     <ButtonText>{showPassword ? "Ocultar senha" : "Mostrar senha"}</ButtonText>
-                </ButtonPassword> 
+                </ButtonPassword>
 
                 <ButtonLogin>
-                    <ButtonLoginText>Log In</ButtonLoginText>
+                    <ButtonLoginText>Cadastrar!</ButtonLoginText>
                 </ButtonLogin>
 
             </Container>
         </Body>
-    );
-}
+    )
+};
