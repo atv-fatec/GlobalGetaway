@@ -24,9 +24,12 @@ export default function Home() {
                     <Link href="/criar-ponto">
                       <Options />
                     </Link>
-                    <Options />
-                    <Options />
-                    <Options />
+                    <Link href="/criar-hotel">
+                      <Options />
+                    </Link>
+                    <Link href="/criar-pacote">
+                      <Options />
+                    </Link>
                 </Container>
                 
             </ContainerBody>

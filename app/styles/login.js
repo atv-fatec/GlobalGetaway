@@ -1,9 +1,9 @@
 import styled from "styled-components/native";
+import { StyleSheet } from 'react-native';
 
 export const Body = styled.View`
   display: flex;
   flex-direction: row;
-  background-color: #37BBCA;
   justify-content: center;
   align-items: center;
   justify-content: center;
@@ -31,6 +31,18 @@ export const LoginText = styled.Text`
     margin-bottom: 20px;
     font-size: 26px;
     color: #FCF5EF;
+`;
+
+export const LinkText = styled.Text`
+    margin-bottom: 20px;
+    font-size: 18px;
+    color: #FCF5EF;
+`;
+
+export const SignupText = styled.Text`
+    margin-top: 20px;
+    font-size: 18px;
+    color: #0080A1;
 `;
 
 export const Input = styled.TextInput`

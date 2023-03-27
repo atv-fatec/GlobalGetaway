@@ -35,7 +35,7 @@ export default function Signup() {
         </ButtonPassword>
 
         <ButtonLogin>
-            <ButtonLoginText><Link href="/index">Cadastrar!</Link></ButtonLoginText>
+            <ButtonLoginText><Link href="/">Cadastrar!</Link></ButtonLoginText>
         </ButtonLogin>
 
     </Container>
