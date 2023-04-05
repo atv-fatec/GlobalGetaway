@@ -30,6 +30,15 @@ export default function Home() {
                     <Link href="/criar-pacote">
                       <Options />
                     </Link>
+                    <Link href="/tabela-ponto">
+                      <Options />
+                    </Link>
+                    <Link href="/tabela-pacote">
+                      <Options />
+                    </Link>
+                    <Link href="/tabela-hotel">
+                      <Options />
+                    </Link>
                 </Container>
                 
             </ContainerBody>
