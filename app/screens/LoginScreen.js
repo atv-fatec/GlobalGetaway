@@ -36,6 +36,7 @@ const LoginScreen = () => {
 
     return (
         <View style={styles.container}>
+            <Text style={styles.title}>Log In</Text>
             <View style={styles.inputContainer}>
                 <TextInput
                     style={styles.input}
@@ -58,13 +59,15 @@ const LoginScreen = () => {
                 <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.button} onPress={() => navigate.navigate('SignUp')}>
-                <Text style={styles.buttonText}>Sign Up</Text>
+            <Text style={styles.txt}>Não possui uma conta?</Text>
+
+            <TouchableOpacity  onPress={() => navigate.navigate('SignUp')}>
+                <Text style={styles.signUpText}>Crie uma aqui!</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.button} onPress={() => navigate.navigate('Principal')}>
+            {/*<TouchableOpacity style={styles.button} onPress={() => navigate.navigate('Principal')}>
                 <Text style={styles.buttonText}>Cliente</Text>
-            </TouchableOpacity>
+    </TouchableOpacity>*/}
         </View>
     );
 };
@@ -82,20 +85,28 @@ const styles = StyleSheet.create({
         borderColor: 'gray',
         borderRadius: 5,
         marginBottom: 10,
+        borderWidth: 2,
+        borderColor: '#61C3C6',
     },
     
     input: {
         padding: 10,
         fontSize: 16,
+        
     },
 
     passwordInput: {
         marginTop: 0,
     },
-
+    title: {
+        fontWeight: 500,
+        fontSize: 35,
+        margin: 20,
+        color: '#436776',
+    },
     button: {
         width: '80%',
-        backgroundColor: '#007AFF',
+        backgroundColor: '#46ADD6',
         height: 50,
         borderRadius: 5,
         justifyContent: 'center',
@@ -107,6 +118,16 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 18,
         fontWeight: 'bold',
+    },
+    signUpText:{
+        color: '#61C3C6',
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+    txt:{
+        fontSize: 16,
+        marginTop: 5,
+        color: '#436776',
     }
 });
 

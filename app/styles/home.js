@@ -6,6 +6,7 @@ export const Body = styled.View`
     background-color: #F6F7FB;
     height: 100%;
     width: 100%;
+    
 `;
 
 export const Welcome = styled.Text`

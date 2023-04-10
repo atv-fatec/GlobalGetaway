@@ -73,6 +73,8 @@ const styles = StyleSheet.create({
         borderColor: 'gray',
         borderRadius: 5,
         marginBottom: 10,
+        borderWidth: 2,
+        borderColor: '#61C3C6',
     },
 
     input: {
@@ -86,7 +88,7 @@ const styles = StyleSheet.create({
 
     button: {
         width: '80%',
-        backgroundColor: '#007AFF',
+        backgroundColor: '#46ADD6',
         height: 50,
         borderRadius: 5,
         justifyContent: 'center',

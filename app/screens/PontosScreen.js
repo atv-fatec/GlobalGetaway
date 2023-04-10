@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, Text, FlatList, StyleSheet, ScrollView, TouchableOpacity, Button } from 'react-native';
+import { View, Text, FlatList, StyleSheet, ScrollView, TouchableOpacity, Button, TextInput } from 'react-native';
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
 import { db } from '../configs/index';
 
 const PontosScreen = ({ navigation }) => {
     const [data, setData] = useState();
+    const [search, setSearch] = useState("");
 
     const findAllPostInStorage = useCallback(
         async () => {
@@ -66,9 +67,16 @@ const PontosScreen = ({ navigation }) => {
 
     return (
         <>
-            <View>
+            <View style={styles.inputContainer}>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Pesquisar"
+                    onChangeText={text => setSearch(text)}
+                    value={search}
+                />
+
                 <TouchableOpacity onPress={criarPonto} style={styles.button}>
-                    <Text style={styles.buttonText}>+</Text>
+                    <Text style={styles.buttonText}>Novo +</Text>
                 </TouchableOpacity>
             </View>
 
@@ -115,15 +123,16 @@ const styles = StyleSheet.create({
     header: {
         flexDirection: 'row',
         borderBottomWidth: 1,
-        borderBottomColor: '#ddd',
+        borderBottomColor: '#88B7C2',
         paddingBottom: 10,
         marginBottom: 10,
+        
     },
 
     row: {
         flexDirection: 'row',
         borderBottomWidth: 1,
-        borderBottomColor: '#ddd',
+        borderBottomColor: '#A7BFC5',
         paddingVertical: 10,
     },
 
@@ -134,26 +143,43 @@ const styles = StyleSheet.create({
     title: {
         fontWeight: 'bold',
         fontSize: 16,
+        color: '#136341'
     },
 
     text: {
         fontSize: 16,
+        color: '#436776'
     },
-
-    button: {
-        width: '15%',
-        backgroundColor: '#007AFF',
-        height: 50,
+    inputContainer:{
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        margin: 10,
+    },
+    input: {
+        width: '70%',
+        height: 40,
+        marginRight: 10,
+        borderWidth: 2,
+        borderColor: '#87DEB1',
+        borderRadius: 5,
+        paddingLeft: 10,
+      },
+    
+      button: {
+        width: '25%',
+        backgroundColor: '#87DEB1',
+        height: 40,
         borderRadius: 5,
         justifyContent: 'center',
         alignItems: 'center',
-    },
-
-    buttonText: {
+      },
+    
+      buttonText: {
         color: '#fff',
-        fontSize: 18,
+        fontSize: 16,
         fontWeight: 'bold',
-    },
+      },
 });
 
 

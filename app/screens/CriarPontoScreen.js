@@ -50,7 +50,7 @@ const CriarPontoScreen = () => {
                 onChangeText={(text) => setPonto({ ...ponto, cidade: text })}
             />
 
-            <Button title="Enviar" onPress={enviarDados} />
+            <Button title="Enviar" onPress={enviarDados} style={styles.button}/>
         </View>
     );
 };
@@ -64,8 +64,8 @@ const styles = StyleSheet.create({
     },
     
     input: {
-        borderWidth: 1,
-        borderColor: '#ccc',
+        borderWidth: 2,
+        borderColor: '#87DEB1',
         borderRadius: 4,
         padding: 10,
         marginVertical: 10,
