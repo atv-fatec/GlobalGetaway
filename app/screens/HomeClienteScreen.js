@@ -1,33 +1,45 @@
 import React from 'react';
 import { View, Text, StyleSheet, TextInput, Image, TouchableOpacity } from 'react-native';
+import { useNavigation } from "@react-navigation/native";
 
 const HomeClienteScreen = () => {
+  const navigate = useNavigation();
+
   return (
     <>
       <View style={styles.inputContainer}>
-            <TextInput
-                style={styles.input}
-                placeholder="Pesquisar"
-            />
+        <TextInput
+            style={styles.input}
+            placeholder="Pesquisar"
+        />
       </View>
       <View style={styles.container}>
-        <View style={styles.box_ponto}>
-          <Image style={styles.image}></Image>
-          <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigate.navigate('PontoCliente')}>
+          <View style={styles.box_ponto} >
+            <Image style={styles.image}></Image>
             <Text style={styles.title_ponto}>Nome do Ponto</Text>
-          </TouchableOpacity>
-          <Text style={styles.txt_ponto}>Local</Text>
-        </View>
+            <Text style={styles.txt_ponto}>Local</Text>
+          </View>
+        </TouchableOpacity>
       </View>
       <View style={styles.box_categorias}>
         <Text style={styles.title_categoria}>Categorias</Text>
         <View style={styles.box_categoria}>
-            <TouchableOpacity><View style={styles.icone_categoria}><Text>Categoria 1</Text></View></TouchableOpacity>
+            <TouchableOpacity>
+              <View style={styles.icone_categoria}>
+                <Text>Categoria 1</Text>
+              </View>
+            </TouchableOpacity>
         </View>
       </View>
       <View style={styles.box_pacotes}>
         <Text style={styles.title_categoria}>Pacotes</Text>
-        <View style={styles.box_pacote}></View>
+        <TouchableOpacity onPress={() => navigate.navigate('PacoteCliente')}>
+          <View style={styles.box_pacote}>
+            <Image style={styles.imagePacote}></Image>
+            <Text style={styles.title_ponto}>Nome do Pacote</Text>
+          </View>
+        </TouchableOpacity>
       </View>
     </>
   );
@@ -65,6 +77,12 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: 100,
+    backgroundColor: "#D9D9D9",
+    borderRadius: 10,
+  },
+  imagePacote: {
+    width: '20%',
+    height: '100%',
     backgroundColor: "#D9D9D9",
     borderRadius: 10,
   },
@@ -107,9 +125,10 @@ const styles = StyleSheet.create({
   box_pacote:{
     width: '100%',
     backgroundColor: '#FFFF',
-    height: 50,
+    height: 80,
     borderRadius: 10,
     marginTop: 15,
+    padding: 8
   }
 });
 

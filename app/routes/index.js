@@ -13,6 +13,8 @@ import BottomNavbarCli from '../components/BottomNavbarCli';
 import HoteisScreen from '../screens/HoteisScreen';
 import PontosScreen from '../screens/PontosScreen';
 import PacotesScreen from '../screens/PacotesScreen';
+import PacoteClienteScreen from '../screens/PacoteClienteScreen';
+import PontoClienteScreen from '../screens/PontoClienteScreen';
 
 const Stack = createStackNavigator();
 
@@ -38,6 +40,10 @@ const AppRoutes = () => {
                 <Stack.Screen name="Ponto" component={PontosScreen} options={{ headerTitle: 'Pontos Turísticos' }} />
 
                 <Stack.Screen name="Pacote" component={PacotesScreen} options={{ headerTitle: 'Pacotes' }} />
+
+                <Stack.Screen name="PacoteCliente" component={PacoteClienteScreen} options={{ headerTitle: 'Pacotes' }} />
+
+                <Stack.Screen name="PontoCliente" component={PontoClienteScreen} options={{ headerTitle: 'Ponto' }} />
             </Stack.Navigator>
         </NavigationContainer>
     );
