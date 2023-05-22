@@ -21,7 +21,7 @@ const Stack = createStackNavigator();
 const AppRoutes = () => {
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="Login">
+            <Stack.Navigator initialRouteName="Home">
                 <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }}/>
 
                 <Stack.Screen name="SignUp" component={SignUpScreen} />
@@ -29,6 +29,7 @@ const AppRoutes = () => {
                 <Stack.Screen name="Home" component={BottomNavbar} options={{ headerTitle: 'Administrador' }} />
 
                 <Stack.Screen name="Principal" component={BottomNavbarCli} options={{ headerTitle: 'Cliente' }} />
+                
                 <Stack.Screen name="CriarPonto" component={CriarPontoScreen} options={{ headerTitle: 'Cadastrar Ponto Turístico' }} />
 
                 <Stack.Screen name="CriarHotel" component={CriarHoteisScreen} options={{ headerTitle: 'Cadastrar Hotel' }} />

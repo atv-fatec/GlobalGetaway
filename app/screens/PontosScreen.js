@@ -1,11 +1,23 @@
 import React, { useEffect, useState, useCallback } from 'react';
+import { useNavigation } from "@react-navigation/native";
 import { View, Text, FlatList, StyleSheet, ScrollView, TouchableOpacity, Button, TextInput } from 'react-native';
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
 import { db } from '../configs/index';
+import Menu from '../components/Menu';
+import MenuScreen from '../components/Menu';
 
 const PontosScreen = ({ navigation }) => {
     const [data, setData] = useState();
     const [search, setSearch] = useState("");
+    const [openedMenu, setOpenedMenu] = useState(Array(data?.length).fill(false));
+
+    const handleMenuPress = (index) => {
+        const updatedMenuState = [...openedMenu];
+        updatedMenuState[index] = !updatedMenuState[index];
+        setOpenedMenu(updatedMenuState);
+        console.log(openedMenu, index);
+    };
+
 
     const findAllPostInStorage = useCallback(
         async () => {
@@ -19,7 +31,7 @@ const PontosScreen = ({ navigation }) => {
 
             if (querySnapshot) {
                 querySnapshot.forEach((doc) => {
-                    console.log(doc.data());
+                    //console.log(doc.data());
                     postData.push({
                         id: doc.id,
                         body: doc.data(),
@@ -28,8 +40,10 @@ const PontosScreen = ({ navigation }) => {
             }
 
             setData(postData);
+
+            console.log(data[0].id);
         },
-        
+
         [setData]
     );
 
@@ -43,10 +57,17 @@ const PontosScreen = ({ navigation }) => {
 
     const renderItem = ({ item, index }) => (
         <View style={styles.row}>
+
             <View style={styles.column}>
-                <Text style={styles.text}>{index + 1}</Text>
+                <TouchableOpacity onPress={() => handleMenuPress(index)}>
+                    <Text style={styles.text}>{index + 1}</Text>
+                </TouchableOpacity>
+
+                <MenuScreen key={index} menu={openedMenu[index]}
+                    onMenuPress={() => handleMenuPress(index)}
+                />
             </View>
-            
+
             <View style={styles.column}>
                 <Text style={styles.text}>{item.body.nome}</Text>
             </View>
@@ -81,8 +102,8 @@ const PontosScreen = ({ navigation }) => {
             </View>
 
             <View style={styles.container}>
-                <View style={styles.header}>
 
+                <View style={styles.header}>
                     <View style={styles.column}>
                         <Text style={styles.title}>ID</Text>
                     </View>
@@ -94,7 +115,7 @@ const PontosScreen = ({ navigation }) => {
                     <View style={styles.column}>
                         <Text style={styles.title}>Categoria</Text>
                     </View>
-                    
+
                     <View style={styles.column}>
                         <Text style={styles.title}>Estado</Text>
                     </View>
@@ -126,7 +147,7 @@ const styles = StyleSheet.create({
         borderBottomColor: '#88B7C2',
         paddingBottom: 10,
         marginBottom: 10,
-        
+
     },
 
     row: {
@@ -150,12 +171,14 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#436776'
     },
-    inputContainer:{
+
+    inputContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
         margin: 10,
     },
+    
     input: {
         width: '70%',
         height: 40,
@@ -164,22 +187,22 @@ const styles = StyleSheet.create({
         borderColor: '#87DEB1',
         borderRadius: 5,
         paddingLeft: 10,
-      },
-    
-      button: {
+    },
+
+    button: {
         width: '25%',
         backgroundColor: '#87DEB1',
         height: 40,
         borderRadius: 5,
         justifyContent: 'center',
         alignItems: 'center',
-      },
-    
-      buttonText: {
+    },
+
+    buttonText: {
         color: '#fff',
         fontSize: 16,
         fontWeight: 'bold',
-      },
+    },
 });
 
 
