@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TextInput, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 
 const PontoClienteScreen = () => {
@@ -7,22 +7,27 @@ const PontoClienteScreen = () => {
 
     return (
         <>
-            <Image style={styles.image}></Image>
-            <View style={styles.box_ponto}>
-                <Text style={styles.title_ponto}>Descrição</Text>
-                <Text style={styles.txt_ponto}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel nisl id lorem aliquet feugiat vitae eget ante. Fusce tristique quam nec leo vestibulum, et congue justo euismod. In nec lobortis elit.</Text>
-            </View>
-            <View style={styles.box_ponto}>
-                <Text style={styles.title_ponto}>Categoria</Text>
-                <View style={styles.icone_categoria}>
-                    <Text>Categoria 1</Text>
+            <ScrollView style={styles.screenContainer}>
+                <View style={styles.screenContainer}>
+                    <Image style={styles.image}></Image>
+                    <View style={styles.box_ponto}>
+                        <Text style={styles.title_ponto}>Descrição</Text>
+                        <Text style={styles.txt_ponto}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel nisl id lorem aliquet feugiat vitae eget ante. Fusce tristique quam nec leo vestibulum, et congue justo euismod. In nec lobortis elit.</Text>
+                    </View>
+                    <View style={styles.box_ponto}>
+                        <Text style={styles.title_ponto}>Categoria</Text>
+                        <View style={styles.icone_categoria}>
+                            <Text>Categoria 1</Text>
+                        </View>
+                    </View>
+                    <View style={styles.box_ponto} >
+                        <TouchableOpacity style={styles.button} onPress={() => navigate.navigate('PacoteCliente')}>
+                            <Text style={styles.buttonText}>Veja os pacotes</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-            </View>
-            <View style={styles.box_ponto} >
-                <TouchableOpacity style={styles.button} onPress={() => navigate.navigate('PacoteCliente')}>
-                    <Text style={styles.buttonText}>Veja os pacotes</Text>
-                </TouchableOpacity>
-            </View>
+            </ScrollView>
+            
         </>
     )
 }
@@ -30,7 +35,7 @@ const PontoClienteScreen = () => {
 const styles = StyleSheet.create({
     image: {
         width: '100%',
-        height: '50%',
+        height: 300,
         backgroundColor: "#D9D9D9",
     },
     title_ponto:{
@@ -53,7 +58,7 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     button: {
-        backgroundColor: '#46ADD6',
+        backgroundColor: '#0D829B',
         height: 50,
         borderRadius: 5,
         justifyContent: 'center',
@@ -67,6 +72,10 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 15,
         fontWeight: 'bold',
+    },
+    screenContainer:{
+        backgroundColor: '#F6F7FB',
+        height: '80%',
     }
 })
 

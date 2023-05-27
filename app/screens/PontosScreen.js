@@ -128,7 +128,8 @@ const PontosScreen = ({ navigation }) => {
                 <FlatList
                     data={data}
                     renderItem={renderItem}
-                    keyExtractor={(item) => item.id.toString()} />
+                    keyExtractor={(item) => item.id.toString()} 
+                />
             </View>
         </>
     );

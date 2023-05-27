@@ -21,14 +21,14 @@ const Stack = createStackNavigator();
 const AppRoutes = () => {
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="Home">
+            <Stack.Navigator initialRouteName="Login">
                 <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }}/>
 
                 <Stack.Screen name="SignUp" component={SignUpScreen} />
 
                 <Stack.Screen name="Home" component={BottomNavbar} options={{ headerTitle: 'Administrador' }} />
 
-                <Stack.Screen name="Principal" component={BottomNavbarCli} options={{ headerTitle: 'Cliente' }} />
+                <Stack.Screen name="Principal" component={BottomNavbarCli} options={{ headerShown: false }} />
                 
                 <Stack.Screen name="CriarPonto" component={CriarPontoScreen} options={{ headerTitle: 'Cadastrar Ponto Turístico' }} />
 
