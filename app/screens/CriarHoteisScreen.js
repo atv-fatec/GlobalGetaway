@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet } from 'react-native';
+import { useNavigation } from "@react-navigation/native";
 import { collection, addDoc } from "firebase/firestore";
+import React, { useState } from 'react';
 import { db } from '../configs/index';
 
 const CriarHoteisScreen = () => {
+    const navigation = useNavigation();
+
     const [hotel, setHotel] = useState({
         nome: '',
         estado: '',
@@ -17,8 +20,12 @@ const CriarHoteisScreen = () => {
             estado: hotel.estado,
             cidade: hotel.cidade,
             rating: hotel.rating
+        }).then(() => {
+            navigation.navigate('Home')
+        }).catch((err) => {
+            console.log(err)
         });
-    }
+    };
 
     return (
         <View style={styles.container}>

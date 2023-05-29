@@ -3,7 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import { View, Text, TouchableOpacity, StyleSheet, Modal } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 
-const MenuScreen = ({ menu }) => {
+const MenuScreen = ({ menu, onDelete }) => {
     const navigate = useNavigation();
 
     const [isMenuOpen, setIsMenuOpen] = useState(menu);
@@ -14,6 +14,10 @@ const MenuScreen = ({ menu }) => {
 
     const handleCloseMenu = () => {
         setIsMenuOpen(!menu);
+    };
+    
+    const handleDelete = () => {
+        onDelete(); // Chama a função onDelete passada como prop
     };
 
     return (
@@ -27,7 +31,7 @@ const MenuScreen = ({ menu }) => {
                                 <AntDesign style={styles.buttonText} name="edit" size={20} color="black" />
                             </TouchableOpacity>
 
-                            <TouchableOpacity style={styles.deleteButton}>
+                            <TouchableOpacity style={styles.deleteButton} onPress={handleDelete}>
                                 <AntDesign style={styles.buttonText} name="delete" size={20} color="black" />
                             </TouchableOpacity>
                         </TouchableOpacity>

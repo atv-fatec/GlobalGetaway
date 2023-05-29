@@ -1,12 +1,15 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { View, TextInput, Button, StyleSheet } from 'react-native';
-import DropdownPicker from 'react-native-dropdown-picker';
 import { collection, addDoc, getDocs, query } from "firebase/firestore";
+import { View, TextInput, Button, StyleSheet } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import DropdownPicker from 'react-native-dropdown-picker';
+import { useNavigation } from "@react-navigation/native";
 import { db } from '../configs/index';
 
 const CriarPacotesScreen = () => {
     const [data, setData] = useState();
     const [data2, setData2] = useState();
+
+    const navigation = useNavigation();
 
     const findAllPostInStorage = useCallback(
         async () => {
@@ -29,7 +32,7 @@ const CriarPacotesScreen = () => {
 
             setData(postData);
         },
-        
+
         [setData]
     );
 
@@ -54,7 +57,7 @@ const CriarPacotesScreen = () => {
 
             setData2(postData);
         },
-        
+
         [setData2]
     );
 
@@ -63,9 +66,8 @@ const CriarPacotesScreen = () => {
         findAllPostInStorage2();
     }, []);
 
-    const namesP = data2?.map(item => ({ label: item?.body?.nome, value: item?.id })) || [];
-
-    const names = data?.map(item => ({ label: item?.body?.nome, value: item?.id })) || [];
+    const namesP = data2?.map(item => ({ label: item?.body?.nome, value: item?.body.nome })) || [];
+    const names = data?.map(item => ({ label: item?.body?.nome, value: item?.body.nome })) || [];
 
     const [pacote, setPacote] = useState({
         nome: '',
@@ -74,7 +76,9 @@ const CriarPacotesScreen = () => {
 
     const [openP, setOpenP] = useState(false);
     const [openH, setOpenH] = useState(false);
+    const [open, setOpen] = useState(false);
 
+    const [value, setValue] = useState([]);
     const [valueP, setValueP] = useState([]);
     const [valueH, setValueH] = useState(null);
 
@@ -90,8 +94,34 @@ const CriarPacotesScreen = () => {
             valor: pacote.valor,
             ponto: valueP,
             hotel: valueH,
+            categorias: value,
+        }).then(() => {
+            navigation.navigate('Home')
+        }).catch((err) => {
+            console.log(err)
         });
     }
+
+    const categorias = [
+        {
+            nomeCat: 'Lazer',
+        },
+        {
+            nomeCat: 'Cultura',
+        },
+        {
+            nomeCat: 'Gastronomia',
+        },
+        {
+            nomeCat: 'Arquitetura',
+        },
+        {
+            nomeCat: 'Religião',
+        },
+        {
+            nomeCat: 'Compras',
+        },
+    ];
 
     return (
         <View style={styles.container}>
@@ -109,7 +139,7 @@ const CriarPacotesScreen = () => {
                 onChangeText={(text) => setPacote({ ...pacote, valor: text })}
             />
 
-            {namesP.length > 0 && (<DropdownPicker                      
+            {namesP.length > 0 && (<DropdownPicker
                 style={styles.input}
                 schema={{ label: 'label', value: 'value' }}
                 multiple={true}
@@ -122,32 +152,35 @@ const CriarPacotesScreen = () => {
                 setValue={setValueP}
                 setItems={setItems}
                 zIndex={100}
-            />) }
-
-{/*             <DropdownPicker
-                style={styles.input}
-                multiple={true}
-                min={1}
-                max={50}
-                open={openP}
-                value={valueP}
-                items={items}
-                setOpen={setOpenP}
-                setValue={setValueP}
-                setItems={setItems}
-            /> */}
+            />)}
 
             {names.length > 0 && (<DropdownPicker
                 style={styles.input}
-                schema={{ label: 'label', value: 'value' }}                
+                schema={{ label: 'label', value: 'value' }}
                 open={openH}
+                multiple={false}
+                max={1}
                 value={valueH}
                 items={names}
                 setOpen={setOpenH}
                 setValue={setValueH}
                 setItems={setItems}
                 zIndex={100}
-            />) }
+            />)}
+
+            <DropdownPicker
+                style={styles.input}
+                schema={{ label: 'label', value: 'value' }}
+                multiple={true}
+                min={1}
+                max={50}
+                open={open}
+                value={value}
+                items={categorias?.map(item => ({ label: item?.nomeCat, value: item?.nomeCat })) || []}
+                setOpen={setOpen}
+                setValue={setValue}
+                zIndex={100}
+            />
 
             <Button title="Enviar" onPress={enviarDados} />
         </View>
