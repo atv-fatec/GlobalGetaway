@@ -2,11 +2,16 @@ import React, { useState } from 'react';
 import { useNavigation } from "@react-navigation/native";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import { View, Text, TextInput, TouchableOpacity, Button, StyleSheet } from 'react-native';
+import { db } from '../configs';
+import { doc, setDoc } from '@firebase/firestore';
 
 const SignUpScreen = ({ navigation }) => {
     const [value, setValue] = useState({
+        nome: "",
         email: "",
-        password: ""
+        cpf: "",
+        password: "",
+        nivel: 2
     });
 
     const navigate = useNavigation();
@@ -15,21 +20,56 @@ const SignUpScreen = ({ navigation }) => {
 
     async function handleSignUp() {
         try {
-            await createUserWithEmailAndPassword(auth, value.email, value.password);
-            navigate.navigate("Login");
+            await createUserWithEmailAndPassword(auth, value.email, value.password).then(async () => {
+                const prevUser = auth.currentUser;
+                
+                const usersRef = doc(db, "usuarios", String(prevUser?.uid));
+                
+                await setDoc(usersRef, {
+                    id: prevUser?.uid,
+                    nome: value.nome,
+                    email: value.email,
+                    cpf: value.cpf,
+                    nivel: 2
+                }).then(() => {
+                    navigation.navigate('Login')
+                }).catch((err) => {
+                    console.log(err)
+                });
+            });
         } catch (error) {
             console.log(error);
         }
     }
-    
+
     return (
         <View style={styles.container}>
             <View style={styles.inputContainer}>
                 <TextInput
                     style={styles.input}
-                    placeholder="Email"
+                    placeholder="Nome"
+                    value={value.nome}
+                    onChangeText={(text) => setValue({ ...value, nome: text })}
+                />
+            </View>
+
+            <View style={styles.inputContainer}>
+                <TextInput
+                    style={styles.input}
+                    placeholder="E-mail"
                     value={value.email}
+                    keyboardType="email-address"
                     onChangeText={(text) => setValue({ ...value, email: text })}
+                />
+            </View>
+
+            <View style={styles.inputContainer}>
+                <TextInput
+                    style={styles.input}
+                    placeholder="CPF"
+                    value={value.cpf}
+                    keyboardType="numeric"
+                    onChangeText={(text) => setValue({ ...value, cpf: text })}
                 />
             </View>
 
@@ -39,19 +79,9 @@ const SignUpScreen = ({ navigation }) => {
                     placeholder="Senha"
                     secureTextEntry
                     value={value.password}
-                    onChangeText={(text) =>  setValue({ ...value, password: text })}
+                    onChangeText={(text) => setValue({ ...value, password: text })}
                 />
             </View>
-
-            {/*<View style={styles.inputContainer}>
-                <TextInput
-                    style={[styles.input, styles.passwordInput]}
-                    placeholder="Confirmar senha"
-                    secureTextEntry
-                    value={value.password}
-                    onChangeText={(text) =>  setValue({ ...value, password: text }) }
-                />
-            </View>*/}
 
             <TouchableOpacity style={styles.button} onPress={handleSignUp}>
                 <Text style={styles.buttonText}>Sign Up</Text>

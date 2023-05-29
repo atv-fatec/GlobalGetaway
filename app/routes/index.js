@@ -15,6 +15,7 @@ import PontosScreen from '../screens/PontosScreen';
 import PacotesScreen from '../screens/PacotesScreen';
 import PacoteClienteScreen from '../screens/PacoteClienteScreen';
 import PontoClienteScreen from '../screens/PontoClienteScreen';
+import UsuariosScreen from '../screens/Usuarios';
 
 const Stack = createStackNavigator();
 
@@ -41,6 +42,8 @@ const AppRoutes = () => {
                 <Stack.Screen name="Ponto" component={PontosScreen} options={{ headerTitle: 'Pontos Turísticos' }} />
 
                 <Stack.Screen name="Pacote" component={PacotesScreen} options={{ headerTitle: 'Pacotes' }} />
+
+                <Stack.Screen name="Usuario" component={UsuariosScreen} options={{ headerTitle: 'Usuários' }} />
 
                 <Stack.Screen name="PacoteCliente" component={PacoteClienteScreen} options={{ headerTitle: 'Pacotes' }} />
 

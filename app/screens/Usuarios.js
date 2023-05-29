@@ -1,41 +1,19 @@
-import { View, Text, FlatList, StyleSheet, ScrollView, TouchableOpacity, Button, TextInput } from 'react-native';
-import { collection, getDocs, query, orderBy, doc, deleteDoc } from "firebase/firestore";
-import React, { useEffect, useState, useCallback } from 'react';
-import { useNavigation } from "@react-navigation/native";
-import MenuScreen from '../components/Menu';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput } from 'react-native';
+import { collection, getDocs, query, orderBy, deleteDoc, doc } from "firebase/firestore";
+import React, { useState, useEffect, useCallback } from 'react';
 import { db } from '../configs/index';
-import Menu from '../components/Menu';
+import MenuScreen from '../components/Menu';
 
-const PontosScreen = ({ navigation }) => {
+const UsuariosScreen = ({ navigation }) => {
     const [data, setData] = useState();
-    const [search, setSearch] = useState("");
+
     const [openedMenu, setOpenedMenu] = useState(Array(data?.length).fill(false));
-
-    const handleMenuPress = (index) => {
-        const updatedMenuState = [...openedMenu];
-
-        updatedMenuState[index] = !updatedMenuState[index];
-
-        setOpenedMenu(updatedMenuState);
-    };
-
-    const handleDelete = async (id) => {
-        await DeletePonto(id);
-    };
-
-    const DeletePonto = async (id) => {
-        const refDataBase = doc(db, `pontos/${id}`);
-
-        await deleteDoc(refDataBase, id);
-        
-        await findAllPostInStorage();
-    };
 
     const findAllPostInStorage = useCallback(
         async () => {
             let postData = [];
 
-            const collect = collection(db, "pontos");
+            const collect = collection(db, "usuarios");
 
             const queryFilterDate = query(collect);
 
@@ -51,29 +29,46 @@ const PontosScreen = ({ navigation }) => {
             }
 
             setData(postData);
-
-            console.log(data[0].id);
         },
 
         [setData]
     );
 
+    const handleMenuPress = (index) => {
+        const updatedMenuState = [...openedMenu];
+
+        updatedMenuState[index] = !updatedMenuState[index];
+
+        setOpenedMenu(updatedMenuState);
+    };
+
+    const handleDelete = async (id) => {
+        await DeletePonto(id);
+    };
+
+    const DeletePonto = async (id) => {
+        const refDataBase = doc(db, `usuarios/${id}`);
+
+        await deleteDoc(refDataBase, id);
+
+        await findAllPostInStorage();
+    };
+
     useEffect(() => {
         findAllPostInStorage();
     }, []);
 
-    const criarPonto = () => {
-        navigation.navigate('CriarPonto');
+    const criarUsuario = () => {
+        navigation.navigate('CriarUsuario');
     }
 
     const renderItem = ({ item, index }) => (
         <View style={styles.row} key={index}>
-
             <View style={styles.column}>
                 <TouchableOpacity onPress={() => handleMenuPress(index)}>
                     <Text style={styles.text}>{index + 1}</Text>
                 </TouchableOpacity>
-
+                
                 <MenuScreen key={index} menu={openedMenu[index]}
                     onMenuPress={() => handleMenuPress(index)}
                     onDelete={() => handleDelete(item.id)}
@@ -85,15 +80,15 @@ const PontosScreen = ({ navigation }) => {
             </View>
 
             <View style={styles.column}>
-                <Text style={styles.text}>{item.body.categoria}</Text>
+                <Text style={styles.text}>{item.body.email}</Text>
             </View>
 
             <View style={styles.column}>
-                <Text style={styles.text}>{item.body.estado}</Text>
+                <Text style={styles.text}>{item.body.cpf}</Text>
             </View>
 
             <View style={styles.column}>
-                <Text style={styles.text}>{item.body.cidade}</Text>
+                <Text style={styles.text}>{item.body.nivel}</Text>
             </View>
         </View>
     );
@@ -104,17 +99,14 @@ const PontosScreen = ({ navigation }) => {
                 <TextInput
                     style={styles.input}
                     placeholder="Pesquisar"
-                    onChangeText={text => setSearch(text)}
-                    value={search}
                 />
 
-                <TouchableOpacity onPress={criarPonto} style={styles.button}>
+                <TouchableOpacity onPress={criarUsuario} style={styles.button}>
                     <Text style={styles.buttonText}>Novo +</Text>
                 </TouchableOpacity>
             </View>
 
             <View style={styles.container}>
-
                 <View style={styles.header}>
                     <View style={styles.column}>
                         <Text style={styles.title}>ID</Text>
@@ -125,15 +117,15 @@ const PontosScreen = ({ navigation }) => {
                     </View>
 
                     <View style={styles.column}>
-                        <Text style={styles.title}>Categoria</Text>
+                        <Text style={styles.title}>E-mail</Text>
                     </View>
 
                     <View style={styles.column}>
-                        <Text style={styles.title}>Estado</Text>
+                        <Text style={styles.title}>CPF</Text>
                     </View>
 
                     <View style={styles.column}>
-                        <Text style={styles.title}>Cidade</Text>
+                        <Text style={styles.title}>Nível</Text>
                     </View>
                 </View>
 
@@ -147,11 +139,11 @@ const PontosScreen = ({ navigation }) => {
     );
 };
 
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 10,
+        width: 'auto'
     },
 
     header: {
@@ -160,7 +152,7 @@ const styles = StyleSheet.create({
         borderBottomColor: '#88B7C2',
         paddingBottom: 10,
         marginBottom: 10,
-
+        width: 'auto'
     },
 
     row: {
@@ -168,6 +160,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: '#A7BFC5',
         paddingVertical: 10,
+        flex: 1,
     },
 
     column: {
@@ -177,34 +170,32 @@ const styles = StyleSheet.create({
     title: {
         fontWeight: 'bold',
         fontSize: 16,
-        color: '#136341'
+        color: '#145B79'
     },
 
     text: {
         fontSize: 16,
         color: '#436776'
     },
-
     inputContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
         margin: 10,
     },
-
     input: {
         width: '70%',
         height: 40,
         marginRight: 10,
         borderWidth: 2,
-        borderColor: '#87DEB1',
+        borderColor: '#46ADD6',
         borderRadius: 5,
         paddingLeft: 10,
     },
 
     button: {
         width: '25%',
-        backgroundColor: '#87DEB1',
+        backgroundColor: '#46ADD6',
         height: 40,
         borderRadius: 5,
         justifyContent: 'center',
@@ -218,5 +209,4 @@ const styles = StyleSheet.create({
     },
 });
 
-
-export default PontosScreen;
+export default UsuariosScreen;

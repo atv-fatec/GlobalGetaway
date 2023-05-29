@@ -1,10 +1,15 @@
-import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput } from 'react-native';
-import { collection, getDocs, query, orderBy } from "firebase/firestore";
+import { collection, getDocs, query, orderBy, deleteDoc, doc } from "firebase/firestore";
+import React, { useState, useEffect, useCallback } from 'react';
 import { db } from '../configs/index';
+import MenuScreen from '../components/Menu';
+import Menu from '../components/Menu';
+
 
 const PacotesScreen = ({ navigation }) => {
     const [data, setData] = useState();
+
+    const [openedMenu, setOpenedMenu] = useState(Array(data?.length).fill(false));
 
     const findAllPostInStorage = useCallback(
         async () => {
@@ -27,22 +32,49 @@ const PacotesScreen = ({ navigation }) => {
 
             setData(postData);
         },
-        
+
         [setData]
     );
+
+    const handleMenuPress = (index) => {
+        const updatedMenuState = [...openedMenu];
+
+        updatedMenuState[index] = !updatedMenuState[index];
+
+        setOpenedMenu(updatedMenuState);
+    };
+
+    const handleDelete = async (id) => {
+        await DeletePonto(id);
+    };
+
+    const DeletePonto = async (id) => {
+        const refDataBase = doc(db, `pacotes/${id}`);
+
+        await deleteDoc(refDataBase, id);
+
+        await findAllPostInStorage();
+    };
 
     useEffect(() => {
         findAllPostInStorage();
     }, []);
-    
+
     const criarPacote = () => {
         navigation.navigate('CriarPacote');
     }
 
     const renderItem = ({ item, index }) => (
-        <View style={styles.row}>
+        <View style={styles.row} key={index}>
             <View style={styles.column}>
-                <Text style={styles.text}>{index + 1}</Text>
+                <TouchableOpacity onPress={() => handleMenuPress(index)}>
+                    <Text style={styles.text}>{index + 1}</Text>
+                </TouchableOpacity>
+                
+                <MenuScreen key={index} menu={openedMenu[index]}
+                    onMenuPress={() => handleMenuPress(index)}
+                    onDelete={() => handleDelete(item.id)}
+                />
             </View>
 
             <View style={styles.column}>
@@ -56,7 +88,7 @@ const PacotesScreen = ({ navigation }) => {
             <View style={styles.column}>
                 <Text style={styles.text}>{item.body.hotel}</Text>
             </View>
-            
+
             <View style={styles.column}>
                 <Text style={styles.text}>{item.body.ponto}</Text>
             </View>
@@ -102,7 +134,7 @@ const PacotesScreen = ({ navigation }) => {
                 <FlatList
                     data={data}
                     renderItem={renderItem}
-                    keyExtractor={(item) => item.id.toString()} 
+                    keyExtractor={(item) => item.id.toString()}
                 />
             </View>
         </>
@@ -147,7 +179,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#436776'
     },
-    inputContainer:{
+    inputContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -161,22 +193,22 @@ const styles = StyleSheet.create({
         borderColor: '#46ADD6',
         borderRadius: 5,
         paddingLeft: 10,
-      },
-    
-      button: {
+    },
+
+    button: {
         width: '25%',
         backgroundColor: '#46ADD6',
         height: 40,
         borderRadius: 5,
         justifyContent: 'center',
         alignItems: 'center',
-      },
-    
-      buttonText: {
+    },
+
+    buttonText: {
         color: '#fff',
         fontSize: 16,
         fontWeight: 'bold',
-      },
+    },
 });
 
 export default PacotesScreen;

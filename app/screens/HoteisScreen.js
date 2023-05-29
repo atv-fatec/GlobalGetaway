@@ -1,10 +1,33 @@
-import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput } from 'react-native';
-import { collection, getDocs, query, orderBy } from "firebase/firestore";
+import { collection, getDocs, query, orderBy, doc, deleteDoc } from "firebase/firestore";
+import React, { useState, useEffect, useCallback } from 'react';
+import MenuScreen from '../components/Menu';
 import { db } from '../configs/index';
 
 const HoteisScreen = ({ navigation }) => {
     const [data, setData] = useState();
+
+    const [openedMenu, setOpenedMenu] = useState(Array(data?.length).fill(false));
+
+    const handleMenuPress = (index) => {
+        const updatedMenuState = [...openedMenu];
+
+        updatedMenuState[index] = !updatedMenuState[index];
+
+        setOpenedMenu(updatedMenuState);
+    };
+
+    const handleDelete = async (id) => {
+        await DeletePonto(id);
+    };
+
+    const DeletePonto = async (id) => {
+        const refDataBase = doc(db, `hoteis/${id}`);
+
+        await deleteDoc(refDataBase, id);
+
+        await findAllPostInStorage();
+    };
 
     const findAllPostInStorage = useCallback(
         async () => {
@@ -28,7 +51,7 @@ const HoteisScreen = ({ navigation }) => {
 
             setData(postData);
         },
-        
+
         [setData]
     );
 
@@ -45,7 +68,13 @@ const HoteisScreen = ({ navigation }) => {
     const renderItem = ({ item, index }) => (
         <View style={styles.row}>
             <View style={styles.column}>
-                <Text style={styles.text}>{index + 1}</Text>
+                <TouchableOpacity onPress={() => handleMenuPress(index)}>
+                    <Text style={styles.text}>{index + 1}</Text>
+                </TouchableOpacity>
+                <MenuScreen key={index} menu={openedMenu[index]}
+                    onMenuPress={() => handleMenuPress(index)}
+                    onDelete={() => handleDelete(item.id)}
+                />
             </View>
 
             <View style={styles.column}>
@@ -139,7 +168,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#436776'
     },
-    inputContainer:{
+    inputContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -153,22 +182,22 @@ const styles = StyleSheet.create({
         borderColor: '#61C3C6',
         borderRadius: 5,
         paddingLeft: 10,
-      },
-    
-      button: {
+    },
+
+    button: {
         width: '25%',
         backgroundColor: '#61C3C6',
         height: 40,
         borderRadius: 5,
         justifyContent: 'center',
         alignItems: 'center',
-      },
-    
-      buttonText: {
+    },
+
+    buttonText: {
         color: '#fff',
         fontSize: 16,
         fontWeight: 'bold',
-      },
+    },
 });
 
 export default HoteisScreen;
