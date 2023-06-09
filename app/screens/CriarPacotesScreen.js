@@ -1,5 +1,5 @@
 import { collection, addDoc, getDocs, query, updateDoc, doc } from "firebase/firestore";
-import { View, TextInput, Button, StyleSheet } from 'react-native';
+import { View, TextInput, Button, StyleSheet, ScrollView } from 'react-native';
 import React, { useState, useEffect, useCallback } from 'react';
 import DropdownPicker from 'react-native-dropdown-picker';
 import { useNavigation } from "@react-navigation/native";
@@ -161,74 +161,74 @@ const CriarPacotesScreen = ({ route }) => {
 
     return (
         <>
-            <ScrollView style={{height: '100%'}}>
-                <View style={styles.container}>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Nome"
-                        defaultValue={route?.params?.nome}
-                        onChangeText={(text) => setPacote({ ...pacote, nome: text })}
-                    />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Valor da passagem"
-                        defaultValue={route?.params?.valor}
-                        onChangeText={(text) => setPacote({ ...pacote, valor: text })}
-                    />
-                    <View style={{ zIndex: 1000 }}>
-                        {namesP.length > 0 && (<DropdownPicker
+                <ScrollView>
+                    <View style={styles.container}>
+                        <TextInput
                             style={styles.input}
-                            schema={{ label: 'label', value: 'value' }}
-                            multiple={true}
-                            min={1}
-                            max={50}
-                            open={openP}
-                            value={valueP}
-                            items={namesP}
-                            setOpen={setOpenP}
-                            setValue={setValueP}
-                            setItems={setItems}
-                            absoluteRTLLayout={false}
-                        />)}
-                    </View>
-                    <View style={{ zIndex: 950 }}>
-                        {names.length > 0 && (<DropdownPicker
-                            style={styles.input}
-                            schema={{ label: 'label', value: 'value' }}
-                            open={openH}
-                            multiple={false}
-                            max={1}
-                            value={valueH}
-                            items={names}
-                            setOpen={setOpenH}
-                            setValue={setValueH}
-                            setItems={setItems}
-                            zIndex={100}
-                        />)}
-                    </View>
-                    <View style={{ zIndex: 900 }}>
-                        <DropdownPicker
-                            style={styles.input}
-                            schema={{ label: 'label', value: 'value' }}
-                            multiple={true}
-                            min={1}
-                            max={50}
-                            open={open}
-                            value={value}
-                            items={categorias?.map(item => ({ label: item?.nomeCat, value: item?.nomeCat })) || []}
-                            setOpen={setOpen}
-                            setValue={setValue}
-                            zIndex={100}
+                            placeholder="Nome"
+                            defaultValue={route?.params?.nome}
+                            onChangeText={(text) => setPacote({ ...pacote, nome: text })}
                         />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Valor da passagem"
+                            defaultValue={route?.params?.valor}
+                            onChangeText={(text) => setPacote({ ...pacote, valor: text })}
+                        />
+                        <View style={{ zIndex: 1000 }}>
+                            {namesP.length > 0 && (<DropdownPicker
+                                style={styles.input}
+                                schema={{ label: 'label', value: 'value' }}
+                                multiple={true}
+                                min={1}
+                                max={50}
+                                open={openP}
+                                value={valueP}
+                                items={namesP}
+                                setOpen={setOpenP}
+                                setValue={setValueP}
+                                setItems={setItems}
+                                absoluteRTLLayout={false}
+                            />)}
+                        </View>
+                        <View style={{ zIndex: 950 }}>
+                            {names.length > 0 && (<DropdownPicker
+                                style={styles.input}
+                                schema={{ label: 'label', value: 'value' }}
+                                open={openH}
+                                multiple={false}
+                                max={1}
+                                value={valueH}
+                                items={names}
+                                setOpen={setOpenH}
+                                setValue={setValueH}
+                                setItems={setItems}
+                                zIndex={100}
+                            />)}
+                        </View>
+                        <View style={{ zIndex: 900 }}>
+                            <DropdownPicker
+                                style={styles.input}
+                                schema={{ label: 'label', value: 'value' }}
+                                multiple={true}
+                                min={1}
+                                max={50}
+                                open={open}
+                                value={value}
+                                items={categorias?.map(item => ({ label: item?.nomeCat, value: item?.nomeCat })) || []}
+                                setOpen={setOpen}
+                                setValue={setValue}
+                                zIndex={100}
+                            />
+                        </View>
+                                {route?.params?.id
+                    ?
+                    <Button title="Editar" onPress={editarDados} style={styles.button} />
+                    :
+                            <Button title="Enviar" onPress={enviarDados} style={styles.button} />
+                                }
                     </View>
-            {route?.params?.id
-                ?
-                <Button title="Editar" onPress={editarDados} style={styles.button} />
-                :
-                        <Button title="Enviar" onPress={enviarDados} style={styles.button} />
-            }
-                </View>
-            </ScrollView>
+                </ScrollView>
         </>
     );
 };
