@@ -73,6 +73,13 @@ const PacotesScreen = ({ navigation }) => {
                 
                 <MenuScreen key={index} menu={openedMenu[index]}
                     onMenuPress={() => handleMenuPress(index)}
+                    onEdit={() => navigation.navigate('CriarPacote', {
+                        id: item.id,
+                        nome: item.body.nome,
+                        valor: item.body.valor,
+                        hotel: item.body.hotel,
+                        ponto: item.body.ponto
+                    })}
                     onDelete={() => handleDelete(item.id)}
                 />
             </View>

@@ -23,7 +23,7 @@ const Stack = createStackNavigator();
 const AppRoutes = () => {
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="Login">
+            <Stack.Navigator initialRouteName="Pacote">
                 <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }}/>
 
                 <Stack.Screen name="SignUp" component={SignUpScreen} />
@@ -32,11 +32,11 @@ const AppRoutes = () => {
 
                 <Stack.Screen name="Principal" component={BottomNavbarCli} options={{ headerShown: false }} />
                 
-                <Stack.Screen name="CriarPonto" component={CriarPontoScreen} options={{ headerTitle: 'Cadastrar Ponto Turístico' }} />
+                <Stack.Screen name="CriarPonto" component={CriarPontoScreen} options={{ headerTitle: 'Cadastrar/Editar Ponto Turístico' }} />
 
-                <Stack.Screen name="CriarHotel" component={CriarHoteisScreen} options={{ headerTitle: 'Cadastrar Hotel' }} />
+                <Stack.Screen name="CriarHotel" component={CriarHoteisScreen} options={{ headerTitle: 'Cadastrar/Editar Hotel' }} />
 
-                <Stack.Screen name="CriarPacote" component={CriarPacotesScreen} options={{ headerTitle: 'Cadastrar Pacote' }} />
+                <Stack.Screen name="CriarPacote" component={CriarPacotesScreen} options={{ headerTitle: 'Cadastrar/Editar Pacote' }} />
 
                 <Stack.Screen name="Hotel" component={HoteisScreen} options={{ headerTitle: 'Hotéis' }} />
 

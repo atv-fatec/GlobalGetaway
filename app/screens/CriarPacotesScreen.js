@@ -1,15 +1,15 @@
-import { collection, addDoc, getDocs, query } from "firebase/firestore";
-import { View, TextInput, Button, StyleSheet, ScrollView } from 'react-native';
+import { collection, addDoc, getDocs, query, updateDoc, doc } from "firebase/firestore";
+import { View, TextInput, Button, StyleSheet } from 'react-native';
 import React, { useState, useEffect, useCallback } from 'react';
 import DropdownPicker from 'react-native-dropdown-picker';
 import { useNavigation } from "@react-navigation/native";
 import { db } from '../configs/index';
 
-const CriarPacotesScreen = () => {
+const CriarPacotesScreen = ({ route }) => {
+    const navigation = useNavigation();
+
     const [data, setData] = useState();
     const [data2, setData2] = useState();
-
-    const navigation = useNavigation();
 
     const findAllPostInStorage = useCallback(
         async () => {
@@ -78,9 +78,9 @@ const CriarPacotesScreen = () => {
     const [openH, setOpenH] = useState(false);
     const [open, setOpen] = useState(false);
 
-    const [value, setValue] = useState([]);
-    const [valueP, setValueP] = useState([]);
-    const [valueH, setValueH] = useState(null);
+    const [value, setValue] = useState(route?.params?.categorias || []);
+    const [valueP, setValueP] = useState(route?.params?.ponto || []);
+    const [valueH, setValueH] = useState(route?.params?.hotel || null);
 
     const [items, setItems] = useState([
         { label: 'Item 1', value: 'item1' },
@@ -95,6 +95,42 @@ const CriarPacotesScreen = () => {
             ponto: valueP,
             hotel: valueH,
             categorias: value,
+        }).then(() => {
+            navigation.navigate('Home')
+        }).catch((err) => {
+            console.log(err)
+        });
+    }
+
+    const editarDados = () => {
+        const refDB = doc(db, `pacotes/${route?.params?.id}`)
+
+        if (pacote.nome.length === 0) {
+            setPacote((prevState) => ({ ...prevState, nome: route?.params?.nome }));
+        }
+
+        if (pacote.valor.length === 0) {
+            setPacote((prevState) => ({ ...prevState, valor: route?.params?.valor }));
+        }
+
+        if (valueP === []) {
+            setValueP(route?.params?.ponto)
+        }
+
+        if (valueH === null) {
+            setValueH(route?.params?.hotel)
+        }
+
+        if (value === []) {
+            setValue(route?.params?.categorias)
+        }
+
+        updateDoc(refDB, {
+            nome: pacote.nome || route?.params?.nome,
+            valor: pacote.valor || route?.params?.valor,
+            ponto: valueP || route?.params?.ponto,
+            hotel: valueH || route?.params?.hotel,
+            categorias: value || route?.params?.categorias,
         }).then(() => {
             navigation.navigate('Home')
         }).catch((err) => {
@@ -130,13 +166,13 @@ const CriarPacotesScreen = () => {
                     <TextInput
                         style={styles.input}
                         placeholder="Nome"
-                        value={pacote.nome}
+                        defaultValue={route?.params?.nome}
                         onChangeText={(text) => setPacote({ ...pacote, nome: text })}
                     />
                     <TextInput
                         style={styles.input}
                         placeholder="Valor da passagem"
-                        value={pacote.valor}
+                        defaultValue={route?.params?.valor}
                         onChangeText={(text) => setPacote({ ...pacote, valor: text })}
                     />
                     <View style={{ zIndex: 1000 }}>
@@ -185,7 +221,12 @@ const CriarPacotesScreen = () => {
                             zIndex={100}
                         />
                     </View>
-                    <Button title="Enviar" onPress={enviarDados} />
+            {route?.params?.id
+                ?
+                <Button title="Editar" onPress={editarDados} style={styles.button} />
+                :
+                        <Button title="Enviar" onPress={enviarDados} style={styles.button} />
+            }
                 </View>
             </ScrollView>
         </>
