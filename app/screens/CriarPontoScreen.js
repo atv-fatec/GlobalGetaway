@@ -70,19 +70,20 @@ const CriarPontoScreen = () => {
                 onChangeText={(text) => setPonto({ ...ponto, descricao: text })}
             />
 
-            <DropdownPicker
-                style={styles.input}
-                schema={{ label: 'label', value: 'value' }}
-                multiple={true}
-                min={1}
-                max={50}
-                open={open}
-                value={value}
-                items={categorias?.map(item => ({ label: item?.nomeCat, value: item?.nomeCat })) || []}
-                setOpen={setOpen}
-                setValue={setValue}
-                zIndex={100}
-            />
+            <View style={{ zIndex: 900 }}>
+                <DropdownPicker
+                    style={styles.input}
+                    schema={{ label: 'label', value: 'value' }}
+                    multiple={true}
+                    min={1}
+                    max={50}
+                    open={open}
+                    value={value}
+                    items={categorias?.map(item => ({ label: item?.nomeCat, value: item?.nomeCat })) || []}
+                    setOpen={setOpen}
+                    setValue={setValue}
+                />
+            </View>
 
             <TextInput
                 style={styles.input}
