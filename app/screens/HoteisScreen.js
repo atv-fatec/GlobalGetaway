@@ -73,6 +73,12 @@ const HoteisScreen = ({ navigation }) => {
                 </TouchableOpacity>
                 <MenuScreen key={index} menu={openedMenu[index]}
                     onMenuPress={() => handleMenuPress(index)}
+                    onEdit={() => navigation.navigate('CriarHotel', {
+                        id: item.id,
+                        nome: item.body.nome,
+                        cidade: item.body.cidade,
+                        estado: item.body.estado,
+                    })}
                     onDelete={() => handleDelete(item.id)}
                 />
             </View>

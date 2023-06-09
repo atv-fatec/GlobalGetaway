@@ -1,10 +1,8 @@
 import { View, Text, FlatList, StyleSheet, ScrollView, TouchableOpacity, Button, TextInput } from 'react-native';
-import { collection, getDocs, query, orderBy, doc, deleteDoc } from "firebase/firestore";
+import { collection, getDocs, query, doc, deleteDoc } from "firebase/firestore";
 import React, { useEffect, useState, useCallback } from 'react';
-import { useNavigation } from "@react-navigation/native";
 import MenuScreen from '../components/Menu';
 import { db } from '../configs/index';
-import Menu from '../components/Menu';
 
 const PontosScreen = ({ navigation }) => {
     const [data, setData] = useState();
@@ -27,7 +25,7 @@ const PontosScreen = ({ navigation }) => {
         const refDataBase = doc(db, `pontos/${id}`);
 
         await deleteDoc(refDataBase, id);
-        
+
         await findAllPostInStorage();
     };
 
@@ -51,8 +49,6 @@ const PontosScreen = ({ navigation }) => {
             }
 
             setData(postData);
-
-            console.log(data[0].id);
         },
 
         [setData]
@@ -76,11 +72,19 @@ const PontosScreen = ({ navigation }) => {
 
                 <MenuScreen key={index} menu={openedMenu[index]}
                     onMenuPress={() => handleMenuPress(index)}
+                    onEdit={() => navigation.navigate('CriarPonto', {
+                        id: item.id,
+                        nome: item.body.nome,
+                        descricao: item.body.descricao,
+                        categoria: item.body.categoria,
+                        estado: item.body.estado,
+                        cidade: item.body.cidade,
+                    })}
                     onDelete={() => handleDelete(item.id)}
                 />
             </View>
 
-            <View style={styles.column}>
+            <View style={styles.column}>    
                 <Text style={styles.text}>{item.body.nome}</Text>
             </View>
 
