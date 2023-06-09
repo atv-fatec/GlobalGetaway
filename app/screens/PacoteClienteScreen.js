@@ -4,6 +4,7 @@ import { useRoute } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 
 const PacoteClienteScreen = () => {
+    const navigate = useNavigation();
     const route = useRoute()
 
     return (
@@ -53,7 +54,7 @@ const PacoteClienteScreen = () => {
                             <Text>R$ {route.params.body.valor}</Text>
                         </View>
                         <View style={styles.col_botaopacote}>
-                            <TouchableOpacity style={styles.button} onPress={() => navigate.navigate()}>
+                            <TouchableOpacity style={styles.button} onPress={() => navigate.navigate('Carrinho')}>
                                 <Text style={styles.buttonText}>Adquira agora!</Text>
                             </TouchableOpacity>
                         </View>

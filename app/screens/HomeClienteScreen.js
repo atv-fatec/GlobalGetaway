@@ -291,7 +291,7 @@ const styles = StyleSheet.create({
         margin: 5,
     },
     col_txtpacote: {
-        width: 200,
+        width: 155,
         height: 60,
         margin: 5,
     },
