@@ -15,6 +15,10 @@ const PacoteClienteScreen = () => {
         route.params.body.ponto.forEach(pts => pts.imgs.forEach(urls => setAllImgs((lastItem) => [...lastItem, urls]))) 
      }, [setAllImgs, route])
 
+     const dateInicio = new Date(route.params.body?.inicio.seconds * 1000);
+     const localeDateIncial = dateInicio.toLocaleDateString();
+     const dateFinal = new Date(route.params.body?.final.seconds * 1000);
+     const localDateFinal = dateFinal.toLocaleDateString();
 
     return (
         <>
@@ -38,9 +42,7 @@ const PacoteClienteScreen = () => {
 
                 <View style={styles.box_ponto}>
                     <Text style={styles.title_ponto}>Data</Text>
-                    <Text>
-                        26/05/2023 - 28/05/2023
-                    </Text>
+                    <Text>{localeDateIncial} - {localDateFinal}</Text>
                 </View>
 
                 <View style={styles.box_ponto}>
@@ -66,7 +68,7 @@ const PacoteClienteScreen = () => {
                             <Text>R$ {route.params.body.valor}</Text>
                         </View>
                         <View style={styles.col_botaopacote}>
-                            <TouchableOpacity style={styles.button} onPress={() => navigate.navigate('Carrinho')}>
+                            <TouchableOpacity style={styles.button} onPress={() => navigate.navigate('Carrinho', { ...route.params.body })}>
                                 <Text style={styles.buttonText}>Adquira agora!</Text>
                             </TouchableOpacity>
                         </View>

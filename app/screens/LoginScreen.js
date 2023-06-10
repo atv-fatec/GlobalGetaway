@@ -78,10 +78,6 @@ const LoginScreen = () => {
             <TouchableOpacity onPress={() => navigate.navigate('SignUp')}>
                 <Text style={styles.signUpText}>Crie uma aqui!</Text>
             </TouchableOpacity>
-
-            <TouchableOpacity style={styles.button} onPress={() => navigate.navigate('Principal')}>
-                <Text style={styles.buttonText}>Cliente</Text>
-            </TouchableOpacity>
         </View>
     );
 };
@@ -106,7 +102,6 @@ const styles = StyleSheet.create({
     input: {
         padding: 10,
         fontSize: 16,
-
     },
 
     passwordInput: {

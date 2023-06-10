@@ -10,20 +10,20 @@ import CriarHoteisScreen from '../screens/CriarHoteisScreen';
 import BottomNavbarCli from '../components/BottomNavbarCli';
 import CriarPontoScreen from '../screens/CriarPontoScreen';
 import CarrinhoScreen from '../screens/CarrinhoScreen';
+import UsuariosScreen from '../screens/UsuariosScreen';
 import BottomNavbar from '../components/BottomNavbar';
 import PacotesScreen from '../screens/PacotesScreen';
 import SignUpScreen from '../screens/SignUpScreen';
 import HoteisScreen from '../screens/HoteisScreen';
 import PontosScreen from '../screens/PontosScreen';
 import LoginScreen from '../screens/LoginScreen';
-import UsuariosScreen from '../screens/UsuariosScreen';
 
 const Stack = createStackNavigator();
 
 const AppRoutes = () => {
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="Home">
+            <Stack.Navigator initialRouteName="Login">
                 <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
 
                 <Stack.Screen name="SignUp" component={SignUpScreen} />

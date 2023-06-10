@@ -1,9 +1,11 @@
 import { collection, addDoc, getDocs, query, updateDoc, doc } from "firebase/firestore";
 import { View, TextInput, Button, StyleSheet, ScrollView } from 'react-native';
+import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import React, { useState, useEffect, useCallback } from 'react';
 import DropdownPicker from 'react-native-dropdown-picker';
 import { useNavigation } from "@react-navigation/native";
 import { db } from '../configs/index';
+import { uuidv4 } from "@firebase/util";
 
 const CriarPacotesScreen = ({ route }) => {
     const navigation = useNavigation();
@@ -74,6 +76,9 @@ const CriarPacotesScreen = ({ route }) => {
         valor: ''
     })
 
+    const [dateInicial, setDateInicial] = useState(new Date());
+    const [dateFinal, setDateFinal] = useState(new Date());
+
     const [openP, setOpenP] = useState(false);
     const [openH, setOpenH] = useState(false);
     const [open, setOpen] = useState(false);
@@ -88,13 +93,52 @@ const CriarPacotesScreen = ({ route }) => {
         { label: 'Item 3', value: 'item3' },
     ]);
 
+    const onChangeInicio = (event, selectedDate) => {
+        const currentDate = selectedDate || dateInicial;
+        setDateInicial(selectedDate);
+      };
+
+    const showModeInicial = (currentMode) => {
+        DateTimePickerAndroid.open({
+            value: dateInicial,
+            onChange: onChangeInicio,
+            mode: currentMode,
+            is24Hour: true,
+        });
+    };
+    
+    const onChangeFinal = (event, selectedDate) => {
+        const currentDate = selectedDate;
+        setDateFinal(currentDate);
+    };
+
+    const showModeFinal = (currentMode) => {
+        DateTimePickerAndroid.open({
+            value: dateFinal,
+            onChange: onChangeFinal,
+            mode: currentMode,
+            is24Hour: true,
+        });
+    };
+
+    const showDatepickerPrimeiro = () => {
+        showModeInicial('date');
+    };
+
+    const showDatepickerFinal = () => {
+        showModeFinal('date');
+    };
+
     const enviarDados = async () => {
         await addDoc(collection(db, "pacotes"), {
+            id: uuidv4(),
             nome: pacote.nome,
             valor: pacote.valor,
             ponto: valueP,
             hotel: valueH,
             categorias: value,
+            inicio: dateInicial,
+            final: dateFinal
         }).then(() => {
             navigation.navigate('Home')
         }).catch((err) => {
@@ -222,6 +266,10 @@ const CriarPacotesScreen = ({ route }) => {
                             zIndex={100}
                         />
                     </View>
+
+                    <Button onPress={showDatepickerPrimeiro} title="Data Inicial" />
+
+                    <Button onPress={showDatepickerFinal} title="Data Final" />
 
                     {route?.params?.id
                         ?
