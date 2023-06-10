@@ -70,7 +70,7 @@ const PacotesScreen = ({ navigation }) => {
                 <TouchableOpacity onPress={() => handleMenuPress(index)}>
                     <Text style={styles.text}>{index + 1}</Text>
                 </TouchableOpacity>
-                
+
                 <MenuScreen key={index} menu={openedMenu[index]}
                     onMenuPress={() => handleMenuPress(index)}
                     onEdit={() => navigation.navigate('CriarPacote', {
@@ -93,11 +93,13 @@ const PacotesScreen = ({ navigation }) => {
             </View>
 
             <View style={styles.column}>
-                <Text style={styles.text}>{item.body.hotel}</Text>
+                <Text style={styles.text}>{item.body.hotel.nome}</Text>
             </View>
 
             <View style={styles.column}>
-                <Text style={styles.text}>{item.body.ponto}</Text>
+                {item.body.ponto.map(i => (
+                    <Text style={styles.text}>{i.nome}</Text>
+                ))}
             </View>
         </View>
     );

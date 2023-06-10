@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Button, StyleSheet } from 'react-native';
-import { collection, getDocs, query, where, limit } from "firebase/firestore";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigation } from "@react-navigation/native";
+import React, { useState } from 'react';
 import { db } from '../configs/index';
-
-import HomeScreen from './HomeScreen';
 
 const LoginScreen = () => {
     const [value, setValue] = useState({
@@ -15,6 +13,14 @@ const LoginScreen = () => {
 
     const navigate = useNavigation();
     const authFirebase = getAuth();
+
+    const GetDocUsuario = async (usuarioUid) => {
+        const collect = doc(collection(db, "usuarios"), usuarioUid);
+        const querySnapshot = await getDoc(collect);
+        const userData = querySnapshot.data();
+        
+        return userData.nivel
+    }
 
     async function handleLogin() {
         if (value.email === "" || value.password === "") {
@@ -26,9 +32,17 @@ const LoginScreen = () => {
                 authFirebase,
                 value.email,
                 value.password
-            );
+            ).then(async () => {
+                const prevUser = authFirebase.currentUser;
+                const nivelUser = await GetDocUsuario(String(prevUser?.uid)).then((res) => res)
 
-            navigate.navigate("Home");
+                if (nivelUser === 1) {
+                    navigate.navigate("Home");
+                }
+                else {
+                    navigate.navigate("Principal")
+                }
+            });
         } catch (error) {
             console.log(error);
         }
@@ -51,7 +65,7 @@ const LoginScreen = () => {
                     placeholder="Senha"
                     secureTextEntry
                     value={value.password}
-                    onChangeText={(text) =>  setValue({ ...value, password: text }) }
+                    onChangeText={(text) => setValue({ ...value, password: text })}
                 />
             </View>
 
@@ -61,13 +75,13 @@ const LoginScreen = () => {
 
             <Text style={styles.txt}>Não possui uma conta?</Text>
 
-            <TouchableOpacity  onPress={() => navigate.navigate('SignUp')}>
+            <TouchableOpacity onPress={() => navigate.navigate('SignUp')}>
                 <Text style={styles.signUpText}>Crie uma aqui!</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.button} onPress={() => navigate.navigate('Principal')}>
                 <Text style={styles.buttonText}>Cliente</Text>
-    </TouchableOpacity>
+            </TouchableOpacity>
         </View>
     );
 };
@@ -88,11 +102,11 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: '#61C3C6',
     },
-    
+
     input: {
         padding: 10,
         fontSize: 16,
-        
+
     },
 
     passwordInput: {
@@ -119,12 +133,12 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
     },
-    signUpText:{
+    signUpText: {
         color: '#61C3C6',
         fontSize: 18,
         fontWeight: 'bold',
     },
-    txt:{
+    txt: {
         fontSize: 16,
         marginTop: 5,
         color: '#436776',

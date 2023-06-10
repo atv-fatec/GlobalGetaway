@@ -100,10 +100,6 @@ const UsuariosScreen = ({ navigation }) => {
                     style={styles.input}
                     placeholder="Pesquisar"
                 />
-
-                <TouchableOpacity onPress={criarUsuario} style={styles.button}>
-                    <Text style={styles.buttonText}>Novo +</Text>
-                </TouchableOpacity>
             </View>
 
             <View style={styles.container}>
@@ -184,7 +180,7 @@ const styles = StyleSheet.create({
         margin: 10,
     },
     input: {
-        width: '70%',
+        width: '100%',
         height: 40,
         marginRight: 10,
         borderWidth: 2,

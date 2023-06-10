@@ -1,16 +1,28 @@
-import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
-import { useRoute } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
+import React, { useEffect, useState } from 'react';
+import { Carrossel } from '../components/Carrossel';
 
 const PacoteClienteScreen = () => {
     const navigate = useNavigation();
     const route = useRoute()
 
+    const [ allImgs, setAllImgs ] = useState([])
+
+    useEffect(() => { 
+        route.params.body.hotel.imgs.forEach((hts) => { setAllImgs((lastItem )=> [...lastItem, hts])})
+        route.params.body.ponto.forEach(pts => pts.imgs.forEach(urls => setAllImgs((lastItem) => [...lastItem, urls]))) 
+     }, [setAllImgs, route])
+
+
     return (
         <>
             <ScrollView>
-                <Image style={styles.image}></Image>
+                <Carrossel arrayImages={allImgs}/>
+
+                <Text style={styles.title_ofc}>{route.params.body.nome}</Text>
+
                 <View style={styles.box_ponto}>
                     <Text style={styles.title_ponto}>Pontos inclusos</Text>
 
@@ -18,9 +30,9 @@ const PacoteClienteScreen = () => {
                         {route.params.body.ponto.map((item, index) => (
                             <Text key={index}>
                                 {index > 0 ? '\n' : ''}
-                                &bull; {item}
+                                &bull; {item.nome}
                             </Text>
-                        ))}
+                        ))} 
                     </Text>
                 </View>
 
@@ -34,7 +46,7 @@ const PacoteClienteScreen = () => {
                 <View style={styles.box_ponto}>
                     <Text style={styles.title_ponto}>Hotel</Text>
                     <Text>
-                        {route.params.body.hotel}
+                        {route.params.body.hotel.nome}
                     </Text>
                 </View>
 
@@ -70,6 +82,12 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 300,
         backgroundColor: "#D9D9D9",
+    },
+    title_ofc: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        marginTop: 15,
+        marginLeft: 10
     },
     title_ponto: {
         fontSize: 20,

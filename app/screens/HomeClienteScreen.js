@@ -67,25 +67,10 @@ const HomeClienteScreen = () => {
     }, []);
 
 
-    const data = [
-        {
-            id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-            title: 'First Item',
-        },
-        {
-            id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-            title: 'Second Item',
-        },
-        {
-            id: '58694a0f-3da1-471f-bd96-145571e29d72',
-            title: 'Third Item',
-        },
-    ];
-
     const renderItem = ({ item }) => (
         <TouchableOpacity onPress={() => navigate.navigate('PontoCliente', { ...item })}>
             <View style={styles.box_ponto} >
-                <Image style={styles.image}></Image>
+                <Image style={styles.image} source={{ uri: item.body.imgs ? String(item.body.imgs[0].url) : null }} ></Image>
                 <Text style={styles.title_ponto}>{item.body.nome}</Text>
                 <Text style={styles.txt_ponto}></Text>
             </View>
@@ -97,7 +82,7 @@ const HomeClienteScreen = () => {
             <View style={styles.box_pacote}>
                 <View style={styles.row_pacote}>
                     <View style={styles.col_imgpacote}>
-                        <Image style={styles.imagePacote}></Image>
+                        <Image style={styles.imagePacote} source={{ uri: String(item.body.hotel.imgs[0].url) }}></Image>
                     </View>
 
                     <View style={styles.col_txtpacote}>

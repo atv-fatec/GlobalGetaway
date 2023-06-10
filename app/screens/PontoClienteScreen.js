@@ -2,27 +2,36 @@ import React from 'react';
 import { useRoute } from "@react-navigation/native";
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
+import { Carrossel } from '../components/Carrossel';
 
 const PontoClienteScreen = () => {
     const navigate = useNavigation();
     const route = useRoute()
-    
+
+    console.log(route.params.body.imgs)
+
     return (
         <>
             <ScrollView style={styles.screenContainer}>
                 <View style={styles.screenContainer}>
-                    <Image style={styles.image}></Image>
+                    <Carrossel arrayImages={route.params.body.imgs}/>
+
+                    <Text style={styles.title_ofc}>{route.params.body.nome}</Text>
+
                     <View style={styles.box_ponto}>
-                        <Text style={styles.title_ponto}>Descrição - {route.params.body.nome}</Text>
+                        <Text style={styles.title_ponto}>Descrição</Text>
                         <Text style={styles.txt_ponto}>{route.params.body.descricao}</Text>
                         <Text style={styles.txt_ponto}>{route.params.body.cidade}, {route.params.body.estado}</Text>
                     </View>
 
                     <View style={styles.box_ponto}>
                         <Text style={styles.title_ponto}>Categoria</Text>
-                        <View style={styles.icone_categoria}>
-                            <Text>{route.params.body.categoria}</Text>
-                        </View>
+
+                        {route.params.body.categoria.map((item, index) => (
+                            <View style={styles.icone_categoria}>
+                                <Text>{route.params.body.categoria[index]}</Text>
+                            </View>
+                        ))}
                     </View>
 
                     <View style={styles.box_ponto} >
@@ -42,6 +51,12 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 300,
         backgroundColor: "#D9D9D9",
+    },
+    title_ofc: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        marginTop: 15,
+        marginLeft: 10
     },
     title_ponto: {
         fontSize: 20,
@@ -72,7 +87,6 @@ const styles = StyleSheet.create({
         padding: 10,
         width: '40%'
     },
-
     buttonText: {
         color: '#fff',
         fontSize: 15,

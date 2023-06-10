@@ -1,9 +1,13 @@
-import { View, TextInput, Button, StyleSheet, ScrollView } from 'react-native';
+import { View, TextInput, Button, StyleSheet, ScrollView, TouchableOpacity, Text } from 'react-native';
+import { getDownloadURL, ref, uploadBytesResumable } from '@firebase/storage';
+import { collection, addDoc, doc, updateDoc } from "firebase/firestore";
+import { MediaTypeOptions, launchImageLibraryAsync } from 'expo-image-picker';
 import DropdownPicker from 'react-native-dropdown-picker';
 import { useNavigation } from "@react-navigation/native";
-import { collection, addDoc, doc, updateDoc } from "firebase/firestore";
+import { AntDesign } from '@expo/vector-icons';
+import { uuidv4 } from '@firebase/util';
 import React, { useState } from 'react';
-import { db } from '../configs/index';
+import { db, storage } from '../configs/index';
 
 const CriarPontoScreen = ({ route }) => {
     const navigation = useNavigation()
@@ -15,17 +19,52 @@ const CriarPontoScreen = ({ route }) => {
         cidade: '',
     });
 
+    const [images, setImages] = useState([])
+
     const [open, setOpen] = useState(false);
 
     const [value, setValue] = useState(route?.params?.categoria || []);
 
+    const pickImage = async () => {
+        let result = await launchImageLibraryAsync({
+            mediaType: MediaTypeOptions.Images,
+            allowsMultipleSelection: true,
+            quality: 1,
+            aspect: [16, 8],
+        })
+
+        if (!result.canceled) {
+            setImages(result.assets)
+        }
+    }
+
+    const uploadImage = async (images) => {
+        const uploadPromise = images.map(async (image) => {
+            const id = uuidv4()
+            const response = await fetch(image.uri)
+            const blob = await response.blob()
+            const imageRef = ref(storage, `images/${id}`)
+            const uploadStatus = uploadBytesResumable(imageRef, blob)
+            const snapshot = await uploadStatus
+
+            return { id, url: await getDownloadURL(snapshot.ref) }
+        })
+
+        return Promise.all(uploadPromise)
+    }
+
     const enviarDados = async () => {
+        const renderUploadImages = await uploadImage(images)
         await addDoc(collection(db, "pontos"), {
             nome: ponto.nome,
             descricao: ponto.descricao,
             categoria: value,
             estado: ponto.estado,
             cidade: ponto.cidade,
+            imgs: renderUploadImages?.map((i) => ({
+                id: i.id,
+                url: i.url
+            }))
         }).then(() => {
             navigation.navigate('Home')
         }).catch((err) => {
@@ -109,7 +148,7 @@ const CriarPontoScreen = ({ route }) => {
                 />
 
                 <View style={{ zIndex: 900 }}>
-                <DropdownPicker
+                    <DropdownPicker
                         style={styles.input}
                         schema={{ label: 'label', value: 'value' }}
                         multiple={true}
@@ -120,8 +159,8 @@ const CriarPontoScreen = ({ route }) => {
                         items={categorias?.map(item => ({ label: item?.nomeCat, value: item?.nomeCat })) || []}
                         setOpen={setOpen}
                         setValue={setValue}
-                        />
-            </View>
+                    />
+                </View>
 
                 <TextInput
                     style={styles.input}
@@ -137,6 +176,10 @@ const CriarPontoScreen = ({ route }) => {
                     onChangeText={(text) => setPonto({ ...ponto, cidade: text })}
                 />
 
+                <TouchableOpacity style={styles.botao} onPress={pickImage}>
+                    <AntDesign name="picture" size={20} color="black" />
+                    <Text style={{ fontSize: 20 }}>Adicionar Imagens</Text>
+                </TouchableOpacity>
 
                 {route?.params?.id
                     ?
@@ -165,6 +208,18 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         width: '100%',
     },
+
+    botao: {
+        borderWidth: 2.5,
+        borderColor: '#87DEB1',
+        alignItems: 'center',
+        justifyContent: 'space-evenly',
+        flexDirection: 'row',
+        height: 35,
+        width: '60%',
+        borderRadius: 5,
+        marginBottom: 10
+    }
 });
 
 export default CriarPontoScreen;

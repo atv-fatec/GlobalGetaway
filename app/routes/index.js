@@ -1,37 +1,37 @@
 import React from 'react';
 
-import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
 
-import LoginScreen from '../screens/LoginScreen';
-import SignUpScreen from '../screens/SignUpScreen';
-import BottomNavbar from '../components/BottomNavbar';
-import CriarPontoScreen from '../screens/CriarPontoScreen';
-import CriarHoteisScreen from '../screens/CriarHoteisScreen';
+import PacoteClienteScreen from '../screens/PacoteClienteScreen';
 import CriarPacotesScreen from '../screens/CriarPacotesScreen';
+import PontoClienteScreen from '../screens/PontoClienteScreen';
+import CriarHoteisScreen from '../screens/CriarHoteisScreen';
 import BottomNavbarCli from '../components/BottomNavbarCli';
+import CriarPontoScreen from '../screens/CriarPontoScreen';
+import CarrinhoScreen from '../screens/CarrinhoScreen';
+import BottomNavbar from '../components/BottomNavbar';
+import PacotesScreen from '../screens/PacotesScreen';
+import SignUpScreen from '../screens/SignUpScreen';
 import HoteisScreen from '../screens/HoteisScreen';
 import PontosScreen from '../screens/PontosScreen';
-import PacotesScreen from '../screens/PacotesScreen';
-import PacoteClienteScreen from '../screens/PacoteClienteScreen';
-import PontoClienteScreen from '../screens/PontoClienteScreen';
-import UsuariosScreen from '../screens/Usuarios';
-import CarrinhoScreen from '../screens/CarrinhoScreen';
+import LoginScreen from '../screens/LoginScreen';
+import UsuariosScreen from '../screens/UsuariosScreen';
 
 const Stack = createStackNavigator();
 
 const AppRoutes = () => {
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="Login">
-                <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }}/>
+            <Stack.Navigator initialRouteName="Home">
+                <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
 
                 <Stack.Screen name="SignUp" component={SignUpScreen} />
 
                 <Stack.Screen name="Home" component={BottomNavbar} options={{ headerTitle: 'Administrador' }} />
 
                 <Stack.Screen name="Principal" component={BottomNavbarCli} options={{ headerShown: false }} />
-                
+
                 <Stack.Screen name="CriarPonto" component={CriarPontoScreen} options={{ headerTitle: 'Cadastrar/Editar Ponto Turístico' }} />
 
                 <Stack.Screen name="CriarHotel" component={CriarHoteisScreen} options={{ headerTitle: 'Cadastrar/Editar Hotel' }} />

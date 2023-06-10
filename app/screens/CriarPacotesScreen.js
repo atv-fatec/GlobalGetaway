@@ -66,8 +66,8 @@ const CriarPacotesScreen = ({ route }) => {
         findAllPostInStorage2();
     }, []);
 
-    const namesP = data2?.map(item => ({ label: item?.body?.nome, value: item?.body.nome })) || [];
-    const names = data?.map(item => ({ label: item?.body?.nome, value: item?.body.nome })) || [];
+    const namesP = data2?.map(item => ({ label: item?.body?.nome, value: item?.body })) || [];
+    const names = data?.map(item => ({ label: item?.body?.nome, value: item?.body })) || [];
 
     const [pacote, setPacote] = useState({
         nome: '',
@@ -161,74 +161,76 @@ const CriarPacotesScreen = ({ route }) => {
 
     return (
         <>
-                <ScrollView>
-                    <View style={styles.container}>
-                        <TextInput
+            <ScrollView>
+                <View style={styles.container}>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Nome"
+                        defaultValue={route?.params?.nome}
+                        onChangeText={(text) => setPacote({ ...pacote, nome: text })}
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Valor da passagem"
+                        defaultValue={route?.params?.valor}
+                        keyboardType="numeric"
+                        onChangeText={(text) => setPacote({ ...pacote, valor: text })}
+                    />
+                    <View style={{ zIndex: 1000 }}>
+                        {namesP.length > 0 && (<DropdownPicker
                             style={styles.input}
-                            placeholder="Nome"
-                            defaultValue={route?.params?.nome}
-                            onChangeText={(text) => setPacote({ ...pacote, nome: text })}
-                        />
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Valor da passagem"
-                            defaultValue={route?.params?.valor}
-                            onChangeText={(text) => setPacote({ ...pacote, valor: text })}
-                        />
-                        <View style={{ zIndex: 1000 }}>
-                            {namesP.length > 0 && (<DropdownPicker
-                                style={styles.input}
-                                schema={{ label: 'label', value: 'value' }}
-                                multiple={true}
-                                min={1}
-                                max={50}
-                                open={openP}
-                                value={valueP}
-                                items={namesP}
-                                setOpen={setOpenP}
-                                setValue={setValueP}
-                                setItems={setItems}
-                                absoluteRTLLayout={false}
-                            />)}
-                        </View>
-                        <View style={{ zIndex: 950 }}>
-                            {names.length > 0 && (<DropdownPicker
-                                style={styles.input}
-                                schema={{ label: 'label', value: 'value' }}
-                                open={openH}
-                                multiple={false}
-                                max={1}
-                                value={valueH}
-                                items={names}
-                                setOpen={setOpenH}
-                                setValue={setValueH}
-                                setItems={setItems}
-                                zIndex={100}
-                            />)}
-                        </View>
-                        <View style={{ zIndex: 900 }}>
-                            <DropdownPicker
-                                style={styles.input}
-                                schema={{ label: 'label', value: 'value' }}
-                                multiple={true}
-                                min={1}
-                                max={50}
-                                open={open}
-                                value={value}
-                                items={categorias?.map(item => ({ label: item?.nomeCat, value: item?.nomeCat })) || []}
-                                setOpen={setOpen}
-                                setValue={setValue}
-                                zIndex={100}
-                            />
-                        </View>
-                                {route?.params?.id
-                    ?
-                    <Button title="Editar" onPress={editarDados} style={styles.button} />
-                    :
-                            <Button title="Enviar" onPress={enviarDados} style={styles.button} />
-                                }
+                            schema={{ label: 'label', value: 'value' }}
+                            multiple={true}
+                            min={1}
+                            max={50}
+                            open={openP}
+                            value={valueP}
+                            items={namesP}
+                            setOpen={setOpenP}
+                            setValue={setValueP}
+                            setItems={setItems}
+                            absoluteRTLLayout={false}
+                        />)}
                     </View>
-                </ScrollView>
+                    <View style={{ zIndex: 950 }}>
+                        {names.length > 0 && (<DropdownPicker
+                            style={styles.input}
+                            schema={{ label: 'label', value: 'value' }}
+                            open={openH}
+                            multiple={false}
+                            max={1}
+                            value={valueH}
+                            items={names}
+                            setOpen={setOpenH}
+                            setValue={setValueH}
+                            setItems={setItems}
+                            zIndex={100}
+                        />)}
+                    </View>
+                    <View style={{ zIndex: 900 }}>
+                        <DropdownPicker
+                            style={styles.input}
+                            schema={{ label: 'label', value: 'value' }}
+                            multiple={true}
+                            min={1}
+                            max={50}
+                            open={open}
+                            value={value}
+                            items={categorias?.map(item => ({ label: item?.nomeCat, value: item?.nomeCat })) || []}
+                            setOpen={setOpen}
+                            setValue={setValue}
+                            zIndex={100}
+                        />
+                    </View>
+
+                    {route?.params?.id
+                        ?
+                        <Button title="Editar" onPress={editarDados} style={styles.button} />
+                        :
+                        <Button title="Enviar" onPress={enviarDados} style={styles.button} />
+                    }
+                </View>
+            </ScrollView>
         </>
     );
 };
