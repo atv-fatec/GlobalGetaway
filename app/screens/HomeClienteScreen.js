@@ -119,7 +119,7 @@ const HomeClienteScreen = () => {
     ];
 
     const renderCategoria = ({ item }) => (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigate.navigate('Categoria', { categoria: item.nomeCat })}>
             <View style={styles.icone_categoria}>
                 <Text>{item.nomeCat}</Text>
             </View>

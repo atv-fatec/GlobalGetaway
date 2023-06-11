@@ -25,7 +25,7 @@ const Stack = createStackNavigator();
 const AppRoutes = () => {
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="Principal">
+            <Stack.Navigator initialRouteName="Login">
                 <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
 
                 <Stack.Screen name="SignUp" component={SignUpScreen} />
@@ -50,13 +50,13 @@ const AppRoutes = () => {
 
                 <Stack.Screen name="PacoteCliente" component={PacoteClienteScreen} options={{ headerTitle: 'Pacotes' }} />
 
-                <Stack.Screen name="PontoCliente" component={PontoClienteScreen} options={{ headerTitle: 'Ponto' }} />
+                <Stack.Screen name="PontoCliente" component={PontoClienteScreen} options={{ headerTitle: 'Ponto Turístico' }} />
 
                 <Stack.Screen name="Carrinho" component={CarrinhoScreen} options={{ headerTitle: 'Carrinho' }} />
 
-                <Stack.Screen name="Categoria" component={CategoriaScreen} options={{ headerTitle: 'Categoria' }}/>
+                <Stack.Screen name="Categoria" component={CategoriaScreen} options={{ headerTitle: 'Pacotes por Categoria' }}/>
 
-                <Stack.Screen name="PacotesPorPonto" component={PacotesPorPontoScreen} options={{ headerTitle: 'Pacotes' }}/>
+                <Stack.Screen name="PacotesPorPonto" component={PacotesPorPontoScreen} options={{ headerTitle: 'Pacotes por Ponto Turístico' }}/>
             </Stack.Navigator>
         </NavigationContainer>
     );
