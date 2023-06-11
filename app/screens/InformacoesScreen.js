@@ -1,22 +1,104 @@
-import React from 'react';
+import { arrayUnion, collection, doc, getDocs, onSnapshot, query, updateDoc, where } from 'firebase/firestore';
 import { View, Text, StyleSheet } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useAuthentication } from '../hooks';
+import { db } from '../configs';
 
 const InformacoesScreen = () => {
+    const { user } = useAuthentication()
+
+    const [data, setData] = useState();
+    const [loading, setLoading] = useState(true);
+
+    const getUserInfo = useCallback(async (uid) => {
+        const usuariosRef = collection(db, 'usuarios');
+        const q = query(usuariosRef, where('id', '==', uid));
+
+        try {
+            const querySnapshot = await getDocs(q);
+            const userData = [];
+
+            querySnapshot.forEach((doc) => {
+                userData.push(doc.data());
+            });
+
+            return userData;
+        } catch (error) {
+            console.error('Erro ao obter informações do usuário:', error);
+            return null;
+        }
+    }, []);
+
+    useEffect(() => {
+        if (user?.uid != null) {
+            setLoading(true); // Define o estado de loading como true ao iniciar a consulta
+
+            getUserInfo(user?.uid).then((userData) => {
+                console.log('userData:', userData);
+                setData(userData);
+            }).catch((error) => {
+                console.error('Erro ao obter informações do usuário:', error);
+            }).finally(() => {
+                setLoading(false); // Define o estado de loading como false ao concluir a consulta
+            });
+        }
+
+        console.log('data:', data);
+    }, [getUserInfo, user?.uid]);
+
+
+    if (data && data.length > 0) {
+        console.log('data:', data[0].compra[0])
+    }
+
+    if (loading) {
+        return (
+            console.log('Carregando dados...')
+        );
+    }
+
+    if (!data || data.length === 0) {
+        return (
+            console.log('Não há dados disponíveis para exibir.')
+        )
+    }
+
     return (
         <>
             <View style={styles.container}>
                 <Text style={styles.info}>Informações pessoais</Text>
-                <Text>Nome: Maria Clara</Text>
-                <Text>Email: mariaclara@email.com</Text>
-                <Text>CPF: 1234567890</Text>
-                <Text>Senha: 12345</Text>
+                <View style={styles.itemContainer}>
+                    <Text>Nome: {data && data.length > 0 ? data[0].nome : ''}</Text>
+                    <Text>Email: {data && data.length > 0 ? data[0].email : ''}</Text>
+                    <Text>CPF: {data && data.length > 0 ? data[0].cpf : ''}</Text>
+                </View>
             </View>
 
             <View style={styles.container}>
                 <Text style={styles.info}>Viagens marcadas</Text>
-                <Text>Nome do pacote</Text>
-                <Text>Data</Text>
-                <Text>Hotel</Text>
+                {data && data.length > 0
+                    ? data[0].compra.map((item, index) => {
+                        return (
+                            <View key={index} style={styles.itemContainer}>
+                                <Text>Nome do pacote: {item.nome}</Text>
+                                <Text>Data: {new Date(item.inicio.seconds * 1000).toLocaleDateString("pt-BR")} - {new Date(item.final.seconds * 1000).toLocaleDateString("pt-BR")}</Text>
+                                <Text>Valor: R$ {item.valor}{'\n'}</Text>
+
+                                <Text>Hotel: {item.hotel.nome} {'\n'}</Text>
+                                <Text>Pontos Turísticos:</Text> 
+                                {item.ponto.map((item, index) => (
+                                    <Text key={index}>
+                                        {index > 0 ? '' : ''}
+                                        &bull; {item}
+                                    </Text>
+                                ))}
+                                
+                                {index !== data[0].compra.length - 1 && <View style={styles.separator} />}
+                            </View>
+                        );
+                    })
+                    : <Text>Não há dados disponíveis para exibir.</Text>
+                }
             </View>
         </>
     );
@@ -44,7 +126,17 @@ const styles = StyleSheet.create({
         fontSize: 20,
         lineHeight: 24,
         color: '#0D404B',
-    }
+    },
+    itemContainer: {
+        marginTop: 10, // Espaçamento superior entre os itens
+        marginBottom: 10, // Espaçamento inferior entre os itens
+    },
+    separator: {
+        paddingTop: 10,
+        paddingBottom: 10,
+        borderBottomWidth: 0.7, // Largura da linha de separação
+        borderColor: 'gray', // Cor da linha de separação
+    },
 });
 
 export default InformacoesScreen;

@@ -1,15 +1,17 @@
+import { arrayUnion, collection, doc, getDoc, updateDoc } from "@firebase/firestore";
 import { View, Text, StyleSheet, Button } from "react-native";
 import DropdownPicker from "react-native-dropdown-picker";
-import React, { useState } from "react";
 import { useRoute } from "@react-navigation/native";
 import { useAuthentication } from "../hooks";
-import { arrayUnion, collection, doc, getDoc, updateDoc } from "@firebase/firestore";
+import React, { useState } from "react";
 import { db } from "../configs";
 
 const CarrinhoScreen = () => {
     const { user } = useAuthentication()
 
     const router = useRoute()
+
+    console.log(router.params);
 
     const [open, setOpen] = useState(false);
     const [openP, setOpenP] = useState(false);
@@ -36,6 +38,7 @@ const CarrinhoScreen = () => {
         const collect = doc(collection(db, "usuarios"), String(user?.uid));
         await updateDoc(collect, {
             compra: arrayUnion({
+                nome: router.params.nome,
                 inicio: router.params.inicio,
                 metodo: formaPagamento,
                 parcelas: quantidadeParcelas,

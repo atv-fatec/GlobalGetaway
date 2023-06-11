@@ -16,9 +16,9 @@ const PacoteClienteScreen = () => {
      }, [setAllImgs, route])
 
      const dateInicio = new Date(route.params.body?.inicio.seconds * 1000);
-     const localeDateIncial = dateInicio.toLocaleDateString();
+     const localeDateIncial = dateInicio.toLocaleDateString("pt-BR");
      const dateFinal = new Date(route.params.body?.final.seconds * 1000);
-     const localDateFinal = dateFinal.toLocaleDateString();
+     const localDateFinal = dateFinal.toLocaleDateString("pt-BR");
 
     return (
         <>
