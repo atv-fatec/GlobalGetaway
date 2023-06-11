@@ -1,15 +1,16 @@
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput } from 'react-native';
-import { collection, getDocs, query, orderBy, deleteDoc, doc } from "firebase/firestore";
+import { collection, getDocs, query, orderBy, deleteDoc, doc, updateDoc } from "firebase/firestore";
 import React, { useState, useEffect, useCallback } from 'react';
 import { db } from '../configs/index';
 import MenuScreen from '../components/Menu';
+import { AntDesign } from '@expo/vector-icons';
 
 const UsuariosScreen = ({ navigation }) => {
     const [data, setData] = useState();
 
-    console.log(data);
-
     const [filteredData, setFilteredData] = useState([]);
+
+    const [reloadKey, setReloadKey] = useState(0);
 
     const [openedMenu, setOpenedMenu] = useState(Array(data?.length).fill(false));
 
@@ -57,6 +58,10 @@ const UsuariosScreen = ({ navigation }) => {
         [setData]
     );
 
+    const handleReload = () => {
+        setReloadKey((prevKey) => prevKey + 1); // Atualize o estado reloadKey para um novo valor
+    };
+
     const handleMenuPress = (index) => {
         const updatedMenuState = [...openedMenu];
 
@@ -64,6 +69,20 @@ const UsuariosScreen = ({ navigation }) => {
 
         setOpenedMenu(updatedMenuState);
     };
+
+    const changeNivel = async (user) => {
+        const refDataBase = doc(db, `usuarios/${user.id}`);
+
+        if (user.nivel == 2) {
+            await updateDoc(refDataBase, {
+                nivel: 1
+            });
+        } else {
+            await updateDoc(refDataBase, {
+                nivel: 2
+            });
+        }
+    }
 
     const handleDelete = async (id) => {
         await DeletePonto(id);
@@ -79,7 +98,7 @@ const UsuariosScreen = ({ navigation }) => {
 
     useEffect(() => {
         findAllPostInStorage();
-    }, []);
+    }, [findAllPostInStorage, reloadKey]);
 
     const criarUsuario = () => {
         navigation.navigate('CriarUsuario');
@@ -94,6 +113,13 @@ const UsuariosScreen = ({ navigation }) => {
 
                 <MenuScreen key={index} menu={openedMenu[index]}
                     onMenuPress={() => handleMenuPress(index)}
+                    onEdit={() => changeNivel({ 
+                        id: item.id,
+                        nome: item.body.nome,
+                        email: item.body.email,
+                        cpf: item.body.cpf,
+                        nivel: item.body.nivel
+                    })}
                     onDelete={() => handleDelete(item.id)}
                 />
             </View>
@@ -125,6 +151,10 @@ const UsuariosScreen = ({ navigation }) => {
                     onChangeText={filterData}
                     value={filteredData}
                 />
+
+                <TouchableOpacity style={styles.refresh} onPress={handleReload}>
+                    <AntDesign name="reload1" size={20} color="#0D404B" />
+                </TouchableOpacity>
             </View>
 
             <View style={styles.container}>
@@ -205,7 +235,7 @@ const styles = StyleSheet.create({
         margin: 10,
     },
     input: {
-        width: '100%',
+        width: '80%',
         height: 40,
         marginRight: 10,
         borderWidth: 2,

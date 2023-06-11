@@ -3,12 +3,14 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 
+import PacotesPorPontoScreen from "../screens/PacotesPorPontoScreen";
 import PacoteClienteScreen from '../screens/PacoteClienteScreen';
 import CriarPacotesScreen from '../screens/CriarPacotesScreen';
 import PontoClienteScreen from '../screens/PontoClienteScreen';
 import CriarHoteisScreen from '../screens/CriarHoteisScreen';
 import BottomNavbarCli from '../components/BottomNavbarCli';
 import CriarPontoScreen from '../screens/CriarPontoScreen';
+import CategoriaScreen from "../screens/CategoriaScreen";
 import CarrinhoScreen from '../screens/CarrinhoScreen';
 import UsuariosScreen from '../screens/UsuariosScreen';
 import BottomNavbar from '../components/BottomNavbar';
@@ -17,8 +19,6 @@ import SignUpScreen from '../screens/SignUpScreen';
 import HoteisScreen from '../screens/HoteisScreen';
 import PontosScreen from '../screens/PontosScreen';
 import LoginScreen from '../screens/LoginScreen';
-import CategoriaScreen from "../screens/CategoriaScreen";
-import PacotesPorPontoScreen from "../screens/PacotesPorPontoScreen";
 
 const Stack = createStackNavigator();
 
