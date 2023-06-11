@@ -1,6 +1,7 @@
 import { arrayUnion, collection, doc, getDoc, updateDoc } from "@firebase/firestore";
 import { View, Text, StyleSheet, Button } from "react-native";
 import DropdownPicker from "react-native-dropdown-picker";
+import { useNavigation } from "@react-navigation/native";
 import { useRoute } from "@react-navigation/native";
 import { useAuthentication } from "../hooks";
 import React, { useState } from "react";
@@ -9,9 +10,9 @@ import { db } from "../configs";
 const CarrinhoScreen = () => {
     const { user } = useAuthentication()
 
-    const router = useRoute()
+    const navigation = useNavigation();
 
-    console.log(router.params);
+    const router = useRoute()
 
     const [open, setOpen] = useState(false);
     const [openP, setOpenP] = useState(false);
@@ -41,7 +42,7 @@ const CarrinhoScreen = () => {
                 nome: router.params.nome,
                 inicio: router.params.inicio,
                 metodo: formaPagamento,
-                parcelas: quantidadeParcelas,
+                parcelas: quantidadeParcelas || null,
                 valor: router.params.valor,
                 hotel: {
                     nome: router.params.hotel.nome,
@@ -51,7 +52,11 @@ const CarrinhoScreen = () => {
                 ponto: router.params.ponto.map(i => (i.nome)),
                 final: router.params.final
             })
-        })
+        }).then(() => {
+            navigation.navigate('Principal')
+        }).catch((err) => {
+            console.log(err)
+        });
     }
 
     return (

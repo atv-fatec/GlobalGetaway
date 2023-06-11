@@ -79,8 +79,6 @@ const CriarPacotesScreen = ({ route }) => {
     const [dateInicial, setDateInicial] = useState(route?.params?.inicio || new Date());
     const [dateFinal, setDateFinal] = useState(route?.params?.final || new Date());
 
-    console.log(dateInicial, dateFinal, "dataaaaaaas");
-
     const [openP, setOpenP] = useState(false);
     const [openH, setOpenH] = useState(false);
     const [open, setOpen] = useState(false);
