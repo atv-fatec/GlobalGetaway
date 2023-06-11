@@ -7,7 +7,26 @@ import { db } from '../configs/index';
 const HoteisScreen = ({ navigation }) => {
     const [data, setData] = useState();
 
+    const [filteredData, setFilteredData] = useState([]);
+
     const [openedMenu, setOpenedMenu] = useState(Array(data?.length).fill(false));
+
+    const filterData = (searchText) => {
+        const filtered = data.filter((item) => {
+            const lowerCaseSearchText = searchText.toLowerCase();
+
+            // Verifica se algum critério corresponde ao valor de pesquisa
+            const nomeMatch = item.body.nome.toLowerCase().includes(lowerCaseSearchText);
+            const ratingMatch = item.body.rating.toLowerCase().includes(lowerCaseSearchText);
+            const estadoMatch = item.body.estado.toLowerCase().includes(lowerCaseSearchText);
+            const cidadeMatch = item.body.cidade.toLowerCase().includes(lowerCaseSearchText);
+
+            // Retorna true se algum critério corresponder
+            return nomeMatch || ratingMatch || estadoMatch || cidadeMatch;
+        });
+
+        setFilteredData(filtered);
+    };
 
     const handleMenuPress = (index) => {
         const updatedMenuState = [...openedMenu];
@@ -103,6 +122,8 @@ const HoteisScreen = ({ navigation }) => {
                 <TextInput
                     style={styles.input}
                     placeholder="Pesquisar"
+                    onChangeText={filterData}
+                    value={filteredData}
                 />
 
                 <TouchableOpacity onPress={criarHotel} style={styles.button}>
@@ -130,7 +151,7 @@ const HoteisScreen = ({ navigation }) => {
                 </View>
 
                 <FlatList
-                    data={data}
+                    data={filteredData.length > 0 ? filteredData : data}
                     renderItem={renderItem}
                     keyExtractor={(item) => item.id.toString()}
                 />

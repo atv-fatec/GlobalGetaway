@@ -5,11 +5,56 @@ import { db } from '../configs/index';
 import MenuScreen from '../components/Menu';
 import Menu from '../components/Menu';
 
-
 const PacotesScreen = ({ navigation }) => {
     const [data, setData] = useState();
 
+    const [filteredData, setFilteredData] = useState([]);
+
     const [openedMenu, setOpenedMenu] = useState(Array(data?.length).fill(false));
+
+    const filterData = (searchText) => {
+        const filtered = data.filter((item) => {
+            const lowerCaseSearchText = searchText.toLowerCase();
+
+            const nomeMatch = item.body.nome.toLowerCase().includes(lowerCaseSearchText);
+
+            const valorMatch = item.body.valor.toLowerCase().includes(lowerCaseSearchText);
+
+            const pontoMatch = item.body.ponto.some((ponto) =>
+                checkCriteriaMatch(ponto, lowerCaseSearchText)
+            );
+
+            const hotelMatch = checkCriteriaMatch(item.body.hotel, lowerCaseSearchText);
+
+            const categoriasMatch = item.body.categorias.some((categoria) =>
+                checkCriteriaMatch(categoria, lowerCaseSearchText)
+            );
+
+            return nomeMatch || valorMatch || pontoMatch || hotelMatch || categoriasMatch;
+        });
+
+        setFilteredData(filtered);
+    };
+
+    const checkCriteriaMatch = (obj, searchText) => {
+        // Percorre as propriedades do objeto
+        for (const prop in obj) {
+            console.log(prop.nome)
+            if (obj.hasOwnProperty(prop)) {
+                const value = obj[prop];
+                // Verifica se o valor corresponde ao critério de pesquisa
+                if (typeof value === 'object') {
+                    // Se o valor for um objeto, chama recursivamente a função para pesquisar nas propriedades do objeto
+                    if (checkCriteriaMatch(value, searchText)) {
+                        return true;
+                    }
+                } else if (typeof value === 'string' && value.toLowerCase().includes(searchText)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    };
 
     const findAllPostInStorage = useCallback(
         async () => {
@@ -110,6 +155,8 @@ const PacotesScreen = ({ navigation }) => {
                 <TextInput
                     style={styles.input}
                     placeholder="Pesquisar"
+                    onChangeText={filterData}
+                    value={filteredData}
                 />
 
                 <TouchableOpacity onPress={criarPacote} style={styles.button}>
@@ -141,9 +188,11 @@ const PacotesScreen = ({ navigation }) => {
                 </View>
 
                 <FlatList
-                    data={data}
+                    data={filteredData.length > 0 ? filteredData : data}
                     renderItem={renderItem}
                     keyExtractor={(item) => item.id.toString()}
+                    horizontal={false}
+                    showsVerticalScrollIndicator={true}
                 />
             </View>
         </>

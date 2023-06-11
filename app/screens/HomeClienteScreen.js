@@ -136,7 +136,7 @@ const HomeClienteScreen = () => {
                             renderItem={renderItem}
                             keyExtractor={item => item.id}
                             horizontal={true}
-                            showsHorizontalScrollIndicator={false}
+                            showsHorizontalScrollIndicator={true}
                         />
                     </View>
 
@@ -148,7 +148,7 @@ const HomeClienteScreen = () => {
                                 renderItem={renderCategoria}
                                 keyExtractor={cat => cat.id}
                                 horizontal={true}
-                                showsHorizontalScrollIndicator={false}
+                                showsHorizontalScrollIndicator={true}
                             />
                         </View>
                     </View>

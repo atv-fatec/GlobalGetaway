@@ -23,7 +23,7 @@ const Stack = createStackNavigator();
 const AppRoutes = () => {
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="Login">
+            <Stack.Navigator initialRouteName="Pacote">
                 <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
 
                 <Stack.Screen name="SignUp" component={SignUpScreen} />

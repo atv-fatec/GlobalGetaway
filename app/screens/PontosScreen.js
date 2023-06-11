@@ -6,8 +6,28 @@ import { db } from '../configs/index';
 
 const PontosScreen = ({ navigation }) => {
     const [data, setData] = useState();
-    const [search, setSearch] = useState("");
+    const [filteredData, setFilteredData] = useState([]);
     const [openedMenu, setOpenedMenu] = useState(Array(data?.length).fill(false));
+
+    const filterData = (searchText) => {
+        const filtered = data.filter((item) => {
+            const lowerCaseSearchText = searchText.toLowerCase();
+
+            // Verifica se algum critério corresponde ao valor de pesquisa
+            const nomeMatch = item.body.nome.toLowerCase().includes(lowerCaseSearchText);
+            const categoriaMatch = item.body.categoria.some((categoria) =>
+                categoria.toLowerCase().includes(lowerCaseSearchText)
+            );
+            const estadoMatch = item.body.estado.toLowerCase().includes(lowerCaseSearchText);
+            const cidadeMatch = item.body.cidade.toLowerCase().includes(lowerCaseSearchText);
+            const descricaoMatch = item.body.descricao.toLowerCase().includes(lowerCaseSearchText);
+
+            // Retorna true se algum critério corresponder
+            return nomeMatch || categoriaMatch || estadoMatch || cidadeMatch || descricaoMatch;
+        });
+
+        setFilteredData(filtered);
+    };
 
     const handleMenuPress = (index) => {
         const updatedMenuState = [...openedMenu];
@@ -84,20 +104,20 @@ const PontosScreen = ({ navigation }) => {
                 />
             </View>
 
-            <View style={styles.column}>    
+            <View style={styles.column}>
                 <Text style={styles.text}>{item.body.nome}</Text>
             </View>
 
             <View style={styles.column}>
-                <Text style={styles.text}>{item.body.categoria}</Text>
+                <Text style={styles.text}>{item.body.descricao}</Text>
             </View>
 
             <View style={styles.column}>
-                <Text style={styles.text}>{item.body.estado}</Text>
-            </View>
-
-            <View style={styles.column}>
-                <Text style={styles.text}>{item.body.cidade}</Text>
+                {item.body.categoria.map((i) => {
+                    return (
+                        <Text style={styles.text}>{i}</Text>
+                    )
+                })}
             </View>
         </View>
     );
@@ -108,8 +128,8 @@ const PontosScreen = ({ navigation }) => {
                 <TextInput
                     style={styles.input}
                     placeholder="Pesquisar"
-                    onChangeText={text => setSearch(text)}
-                    value={search}
+                    onChangeText={filterData}
+                    value={filteredData}
                 />
 
                 <TouchableOpacity onPress={criarPonto} style={styles.button}>
@@ -129,22 +149,20 @@ const PontosScreen = ({ navigation }) => {
                     </View>
 
                     <View style={styles.column}>
+                        <Text style={styles.title}>Descricao</Text>
+                    </View>
+
+                    <View style={styles.column}>
                         <Text style={styles.title}>Categoria</Text>
-                    </View>
-
-                    <View style={styles.column}>
-                        <Text style={styles.title}>Estado</Text>
-                    </View>
-
-                    <View style={styles.column}>
-                        <Text style={styles.title}>Cidade</Text>
                     </View>
                 </View>
 
                 <FlatList
-                    data={data}
+                    data={filteredData.length > 0 ? filteredData : data}
                     renderItem={renderItem}
                     keyExtractor={(item) => item.id.toString()}
+                    horizontal={false}
+                    showsVerticalScrollIndicator={true}
                 />
             </View>
         </>
@@ -171,7 +189,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         borderBottomWidth: 1,
         borderBottomColor: '#A7BFC5',
-        paddingVertical: 10,
+        paddingVertical: 20,
     },
 
     column: {
