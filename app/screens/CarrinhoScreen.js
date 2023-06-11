@@ -44,9 +44,9 @@ const CarrinhoScreen = () => {
                 parcelas: quantidadeParcelas,
                 valor: router.params.valor,
                 hotel: {
-                  nome: router.params.hotel.nome,
-                  cidade: router.params.hotel.cidade,
-                  estado: router.params.hotel.estado
+                    nome: router.params.hotel.nome,
+                    cidade: router.params.hotel.cidade,
+                    estado: router.params.hotel.estado
                 },
                 ponto: router.params.ponto.map(i => (i.nome)),
                 final: router.params.final
@@ -74,22 +74,26 @@ const CarrinhoScreen = () => {
                     />
                 </View>
 
-                <View style={{ zIndex: 800 }}>
-                    <DropdownPicker
-                        placeholder="Selecione a quantidade de parcelas"
-                        schema={{ label: 'label', value: 'value' }}
-                        style={styles.input}
-                        multiple={false}
-                        min={1}
-                        max={50}
-                        open={openP}
-                        setValue={setQuantidadeParcelas}
-                        value={quantidadeParcelas}
-                        zIndex={100}
-                        items={quantidadeParcelasOptions?.map(item => ({ label: item?.label, value: item?.value })) || []}
-                        setOpen={setOpenP}
-                    />
-                </View>
+                {formaPagamento === 'credito' ?
+                    <View style={{ zIndex: 800 }}>
+                        <DropdownPicker
+                            placeholder="Selecione a quantidade de parcelas"
+                            schema={{ label: 'label', value: 'value' }}
+                            style={styles.input}
+                            multiple={false}
+                            min={1}
+                            max={50}
+                            open={openP}
+                            setValue={setQuantidadeParcelas}
+                            value={quantidadeParcelas}
+                            zIndex={100}
+                            items={quantidadeParcelasOptions?.map(item => ({ label: item?.label, value: item?.value })) || []}
+                            setOpen={setOpenP}
+                        />
+                    </View>
+
+                    : null
+                }
 
                 <Button onPress={handleSubmitBuy} title="Finalizar compra!" style={styles.button} />
             </View>
