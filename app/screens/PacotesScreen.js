@@ -189,7 +189,7 @@ const PacotesScreen = ({ navigation }) => {
                     </View>
 
                     <View style={styles.column}>
-                        <Text style={styles.title}>Passagem</Text>
+                        <Text style={styles.title}>Valor</Text>
                     </View>
 
                     <View style={styles.column}>

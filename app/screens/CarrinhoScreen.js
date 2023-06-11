@@ -62,6 +62,8 @@ const CarrinhoScreen = () => {
     return (
         <>
             <View style={styles.container}>
+                <Text style={styles.label}>Forma de Pagamento</Text>
+
                 <View style={{ zIndex: 900 }}>
                     <DropdownPicker
                         placeholder="Selecione a forma de pagamento"
@@ -80,23 +82,26 @@ const CarrinhoScreen = () => {
                 </View>
 
                 {formaPagamento === 'credito' ?
-                    <View style={{ zIndex: 800 }}>
-                        <DropdownPicker
-                            placeholder="Selecione a quantidade de parcelas"
-                            schema={{ label: 'label', value: 'value' }}
-                            style={styles.input}
-                            multiple={false}
-                            min={1}
-                            max={50}
-                            open={openP}
-                            setValue={setQuantidadeParcelas}
-                            value={quantidadeParcelas}
-                            zIndex={100}
-                            items={quantidadeParcelasOptions?.map(item => ({ label: item?.label, value: item?.value })) || []}
-                            setOpen={setOpenP}
-                        />
-                    </View>
+                    <>
+                        <Text style={styles.label}>Parcelas</Text>
 
+                        <View style={{ zIndex: 800 }}>
+                            <DropdownPicker
+                                placeholder="Selecione a quantidade de parcelas"
+                                schema={{ label: 'label', value: 'value' }}
+                                style={styles.input}
+                                multiple={false}
+                                min={1}
+                                max={50}
+                                open={openP}
+                                setValue={setQuantidadeParcelas}
+                                value={quantidadeParcelas}
+                                zIndex={100}
+                                items={quantidadeParcelasOptions?.map(item => ({ label: item?.label, value: item?.value })) || []}
+                                setOpen={setOpenP}
+                            />
+                        </View>
+                    </>
                     : null
                 }
 
@@ -121,6 +126,17 @@ const styles = StyleSheet.create({
         padding: 10,
         marginVertical: 10,
         width: "100%",
+    },
+
+    label: {
+        marginStart: 40,
+        alignSelf: 'flex-start',
+        fontStyle: 'normal',
+        fontWeight: '500',
+        fontSize: 20,
+        lineHeight: 24,
+        marginBottom: 5,
+        color: '#0D404B',
     },
 });
 

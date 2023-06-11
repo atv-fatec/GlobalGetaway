@@ -104,12 +104,17 @@ const CriarHoteisScreen = ({ route }) => {
 
     return (
         <View style={styles.container}>
+
+            <Text style={styles.label}>Senha</Text>
+
             <TextInput
                 style={styles.input}
                 placeholder="Nome"
                 defaultValue={route?.params?.nome}
                 onChangeText={(text) => setHotel({ ...hotel, nome: text })}
             />
+
+            <Text style={styles.label}>Senha</Text>
 
             <TextInput
                 style={styles.input}
@@ -118,12 +123,16 @@ const CriarHoteisScreen = ({ route }) => {
                 onChangeText={(text) => setHotel({ ...hotel, estado: text })}
             />
 
+            <Text style={styles.label}>Senha</Text>
+
             <TextInput
                 style={styles.input}
                 placeholder="Cidade"
                 defaultValue={route?.params?.cidade}
                 onChangeText={(text) => setHotel({ ...hotel, cidade: text })}
             />
+
+            <Text style={styles.label}>Senha</Text>
 
             <TextInput
                 style={styles.input}
@@ -161,21 +170,34 @@ const styles = StyleSheet.create({
         borderColor: '#61C3C6',
         borderRadius: 4,
         padding: 10,
-        marginVertical: 10,
+        marginVertical: 5,
         width: '100%',
     },
 
     botao: {
-        borderWidth: 2.5,
-        borderColor: '#61C3C6',
+        alignSelf: 'flex-end',
         alignItems: 'center',
         justifyContent: 'space-evenly',
         flexDirection: 'row',
         height: 35,
         width: '60%',
         borderRadius: 5,
-        marginBottom: 10
-    }
+        marginBottom: 20,
+        marginTop: 10,
+        borderBottomColor: '#87DEB1',
+        borderBottomWidth: 2.5,
+    },
+
+
+    label: {
+        alignSelf: 'flex-start',
+        fontStyle: 'normal',
+        fontWeight: '500',
+        fontSize: 20,
+        lineHeight: 24,
+        marginTop: 10,
+        color: '#0D404B',
+    },
 });
 
 export default CriarHoteisScreen;
