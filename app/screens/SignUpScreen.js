@@ -22,9 +22,9 @@ const SignUpScreen = ({ navigation }) => {
         try {
             await createUserWithEmailAndPassword(auth, value.email, value.password).then(async () => {
                 const prevUser = auth.currentUser;
-                
+
                 const usersRef = doc(db, "usuarios", String(prevUser?.uid));
-                
+
                 await setDoc(usersRef, {
                     id: prevUser?.uid,
                     nome: value.nome,
@@ -44,39 +44,47 @@ const SignUpScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
+            <Text style={styles.label}>Nome</Text>
+
             <View style={styles.inputContainer}>
                 <TextInput
                     style={styles.input}
-                    placeholder="Nome"
+                    placeholder="Insira seu nome"
                     value={value.nome}
                     onChangeText={(text) => setValue({ ...value, nome: text })}
                 />
             </View>
 
+            <Text style={styles.label}>E-mail</Text>
+
             <View style={styles.inputContainer}>
                 <TextInput
                     style={styles.input}
-                    placeholder="E-mail"
+                    placeholder="Insira seu e-mail"
                     value={value.email}
                     keyboardType="email-address"
                     onChangeText={(text) => setValue({ ...value, email: text })}
                 />
             </View>
 
+            <Text style={styles.label}>CPF</Text>
+
             <View style={styles.inputContainer}>
                 <TextInput
                     style={styles.input}
-                    placeholder="CPF"
+                    placeholder="Insira seu CPF"
                     value={value.cpf}
                     keyboardType="numeric"
                     onChangeText={(text) => setValue({ ...value, cpf: text })}
                 />
             </View>
 
+            <Text style={styles.label}>Senha</Text>
+
             <View style={styles.inputContainer}>
                 <TextInput
                     style={[styles.input, styles.passwordInput]}
-                    placeholder="Senha"
+                    placeholder="Insira sua senha"
                     secureTextEntry
                     value={value.password}
                     onChangeText={(text) => setValue({ ...value, password: text })}
@@ -105,6 +113,17 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         borderWidth: 2,
         borderColor: '#61C3C6',
+    },
+
+    label: {
+        marginStart: 40,
+        alignSelf: 'flex-start',
+        fontStyle: 'normal',
+        fontWeight: '500',
+        fontSize: 20,
+        lineHeight: 24,
+        marginBottom: 5,
+        color: '#0D404B',
     },
 
     input: {

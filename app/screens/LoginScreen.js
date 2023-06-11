@@ -18,7 +18,7 @@ const LoginScreen = () => {
         const collect = doc(collection(db, "usuarios"), usuarioUid);
         const querySnapshot = await getDoc(collect);
         const userData = querySnapshot.data();
-        
+
         return userData.nivel
     }
 
@@ -51,18 +51,26 @@ const LoginScreen = () => {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Log In</Text>
+
+            <Text style={styles.label}>E-mail</Text>
+
             <View style={styles.inputContainer}>
+
                 <TextInput
                     style={styles.input}
-                    placeholder="Email"
+                    placeholder="Insira seu e-mail"
                     value={value.email}
                     onChangeText={(text) => setValue({ ...value, email: text })}
                 />
             </View>
+
+            <Text style={styles.label}>Senha</Text>
+
             <View style={styles.inputContainer}>
+
                 <TextInput
                     style={[styles.input, styles.passwordInput]}
-                    placeholder="Senha"
+                    placeholder="Insira sua senha"
                     secureTextEntry
                     value={value.password}
                     onChangeText={(text) => setValue({ ...value, password: text })}
@@ -87,6 +95,17 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+
+    label: {
+        marginStart: 40,
+        alignSelf: 'flex-start',
+        fontStyle: 'normal',
+        fontWeight: '500',
+        fontSize: 20,
+        lineHeight: 24,
+        marginBottom: 5,
+        color: '#0D404B',
     },
 
     inputContainer: {

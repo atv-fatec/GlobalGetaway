@@ -1,5 +1,5 @@
 import { collection, addDoc, getDocs, query, updateDoc, doc } from "firebase/firestore";
-import { View, TextInput, Button, StyleSheet, ScrollView } from 'react-native';
+import { View, TextInput, Button, StyleSheet, ScrollView, Text } from 'react-native';
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import React, { useState, useEffect, useCallback } from 'react';
 import DropdownPicker from 'react-native-dropdown-picker';
@@ -78,8 +78,6 @@ const CriarPacotesScreen = ({ route }) => {
 
     const [dateInicial, setDateInicial] = useState(route?.params?.inicio || new Date());
     const [dateFinal, setDateFinal] = useState(route?.params?.final || new Date());
-
-    console.log(dateInicial, dateFinal, "dataaaaaaas");
 
     const [openP, setOpenP] = useState(false);
     const [openH, setOpenH] = useState(false);
@@ -219,23 +217,32 @@ const CriarPacotesScreen = ({ route }) => {
         <>
             <ScrollView>
                 <View style={styles.container}>
+                    <Text style={styles.label}>Nome</Text>
+
                     <TextInput
                         style={styles.input}
-                        placeholder="Nome"
+                        placeholder="Insira o nome do pacote"
                         defaultValue={route?.params?.nome}
                         onChangeText={(text) => setPacote({ ...pacote, nome: text })}
                     />
+
+                    <Text style={styles.label}>Valor do Pacote</Text>
+
                     <TextInput
                         style={styles.input}
-                        placeholder="Valor da passagem"
+                        placeholder="Insira o valor do pacote"
                         defaultValue={route?.params?.valor}
                         keyboardType="numeric"
                         onChangeText={(text) => setPacote({ ...pacote, valor: text })}
                     />
+
+                    <Text style={styles.label}>Pontos Turísticos</Text>
+
                     <View style={{ zIndex: 1000 }}>
                         {namesP.length > 0 && (<DropdownPicker
                             style={styles.input}
                             schema={{ label: 'label', value: 'value' }}
+                            placeholder="Selecione os pontos turísticos do pacote"
                             multiple={true}
                             min={1}
                             max={50}
@@ -248,10 +255,14 @@ const CriarPacotesScreen = ({ route }) => {
                             absoluteRTLLayout={false}
                         />)}
                     </View>
+
+                    <Text style={styles.label}>Hotel</Text>
+
                     <View style={{ zIndex: 950 }}>
                         {names.length > 0 && (<DropdownPicker
                             style={styles.input}
                             schema={{ label: 'label', value: 'value' }}
+                            placeholder="Selecione o hotel do pacote"
                             open={openH}
                             multiple={false}
                             max={1}
@@ -263,10 +274,14 @@ const CriarPacotesScreen = ({ route }) => {
                             zIndex={100}
                         />)}
                     </View>
+
+                    <Text style={styles.label}>Categorias</Text>
+
                     <View style={{ zIndex: 900 }}>
                         <DropdownPicker
                             style={styles.input}
                             schema={{ label: 'label', value: 'value' }}
+                            placeholder="Selecione as categorias do pacote"
                             multiple={true}
                             min={1}
                             max={50}
@@ -284,12 +299,16 @@ const CriarPacotesScreen = ({ route }) => {
                         null
                         :
                         <>
-                            <View style={styles.data} >
-                                <Button onPress={showDatepickerPrimeiro} title="Data Inicial" style={styles.data} />
-                            </View>
+                            <Text style={styles.label}>Datas do Pacote</Text>
 
-                            <View style={styles.data} >
-                                <Button onPress={showDatepickerFinal} title="Data Final" />
+                            <View style={styles.dataContainer}>
+                                <View style={styles.data} >
+                                    <Button onPress={showDatepickerPrimeiro} title="Data Inicial" style={styles.data} />
+                                </View>
+
+                                <View style={styles.data} >
+                                    <Button onPress={showDatepickerFinal} title="Data Final" />
+                                </View>
                             </View>
                         </>
                     }
@@ -324,9 +343,27 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         width: '100%',
     },
+
+    dataContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+    },
+
     data: {
-        marginBottom: 10,
-    }
+        marginVertical: 10,
+        alignSelf: 'flex-start',
+    },
+
+    label: {
+        alignSelf: 'flex-start',
+        fontStyle: 'normal',
+        fontWeight: '500',
+        fontSize: 20,
+        lineHeight: 24,
+        marginTop: 10,
+        color: '#0D404B',
+    },
 });
 
 export default CriarPacotesScreen;

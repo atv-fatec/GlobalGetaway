@@ -4,11 +4,14 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { db } from '../configs/index';
 import MenuScreen from '../components/Menu';
 import Menu from '../components/Menu';
+import { AntDesign } from '@expo/vector-icons';
 
 const PacotesScreen = ({ navigation }) => {
     const [data, setData] = useState();
 
     const [filteredData, setFilteredData] = useState([]);
+
+    const [reloadKey, setReloadKey] = useState(0);
 
     const [openedMenu, setOpenedMenu] = useState(Array(data?.length).fill(false));
 
@@ -80,6 +83,10 @@ const PacotesScreen = ({ navigation }) => {
 
         [setData]
     );
+    
+    const handleReload = () => {
+        setReloadKey((prevKey) => prevKey + 1); // Atualize o estado reloadKey para um novo valor
+    };
 
     const handleMenuPress = (index) => {
         const updatedMenuState = [...openedMenu];
@@ -103,7 +110,7 @@ const PacotesScreen = ({ navigation }) => {
 
     useEffect(() => {
         findAllPostInStorage();
-    }, []);
+    }, [findAllPostInStorage, reloadKey]);
 
     const criarPacote = () => {
         navigation.navigate('CriarPacote');
@@ -165,6 +172,10 @@ const PacotesScreen = ({ navigation }) => {
                 <TouchableOpacity onPress={criarPacote} style={styles.button}>
                     <Text style={styles.buttonText}>Novo +</Text>
                 </TouchableOpacity>
+
+                <TouchableOpacity style={styles.refresh} onPress={handleReload}>
+                    <AntDesign name="reload1" size={20} color="#0D404B" />
+                </TouchableOpacity>
             </View>
 
             <View style={styles.container}>
@@ -178,7 +189,7 @@ const PacotesScreen = ({ navigation }) => {
                     </View>
 
                     <View style={styles.column}>
-                        <Text style={styles.title}>Passagem</Text>
+                        <Text style={styles.title}>Valor</Text>
                     </View>
 
                     <View style={styles.column}>
@@ -257,7 +268,7 @@ const styles = StyleSheet.create({
     },
 
     button: {
-        width: '25%',
+        width: '18%',
         backgroundColor: '#46ADD6',
         height: 40,
         borderRadius: 5,

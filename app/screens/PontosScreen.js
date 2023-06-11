@@ -3,11 +3,13 @@ import { collection, getDocs, query, doc, deleteDoc } from "firebase/firestore";
 import React, { useEffect, useState, useCallback } from 'react';
 import MenuScreen from '../components/Menu';
 import { db } from '../configs/index';
+import { AntDesign } from '@expo/vector-icons';
 
 const PontosScreen = ({ navigation }) => {
     const [data, setData] = useState();
 
     const [filteredData, setFilteredData] = useState([]);
+    const [reloadKey, setReloadKey] = useState(0);
     const [openedMenu, setOpenedMenu] = useState(Array(data?.length).fill(false));
 
     const filterData = (searchText) => {
@@ -36,6 +38,10 @@ const PontosScreen = ({ navigation }) => {
         updatedMenuState[index] = !updatedMenuState[index];
 
         setOpenedMenu(updatedMenuState);
+    };
+
+    const handleReload = () => {
+        setReloadKey((prevKey) => prevKey + 1); // Atualize o estado reloadKey para um novo valor
     };
 
     const handleDelete = async (id) => {
@@ -77,7 +83,7 @@ const PontosScreen = ({ navigation }) => {
 
     useEffect(() => {
         findAllPostInStorage();
-    }, []);
+    }, [findAllPostInStorage, reloadKey]);
 
     const criarPonto = () => {
         navigation.navigate('CriarPonto');
@@ -136,6 +142,10 @@ const PontosScreen = ({ navigation }) => {
 
                 <TouchableOpacity onPress={criarPonto} style={styles.button}>
                     <Text style={styles.buttonText}>Novo +</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.refresh} onPress={handleReload}>
+                    <AntDesign name="reload1" size={20} color="#0D404B" />
                 </TouchableOpacity>
             </View>
 
@@ -227,7 +237,7 @@ const styles = StyleSheet.create({
     },
 
     button: {
-        width: '25%',
+        width: '18%',
         backgroundColor: '#87DEB1',
         height: 40,
         borderRadius: 5,

@@ -1,14 +1,16 @@
 import { arrayUnion, collection, doc, getDocs, onSnapshot, query, updateDoc, where } from 'firebase/firestore';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useAuthentication } from '../hooks';
 import { db } from '../configs';
+import { AntDesign } from '@expo/vector-icons';
 
 const InformacoesScreen = () => {
     const { user } = useAuthentication()
 
     const [data, setData] = useState();
     const [loading, setLoading] = useState(true);
+    const [reloadKey, setReloadKey] = useState(0);
 
     const getUserInfo = useCallback(async (uid) => {
         const usuariosRef = collection(db, 'usuarios');
@@ -42,10 +44,11 @@ const InformacoesScreen = () => {
                 setLoading(false); // Define o estado de loading como false ao concluir a consulta
             });
         }
+    }, [getUserInfo, user?.uid, reloadKey]);
 
-        console.log('data:', data);
-    }, [getUserInfo, user?.uid]);
-
+    const handleReload = () => {
+        setReloadKey((prevKey) => prevKey + 1); // Atualize o estado reloadKey para um novo valor
+    };
 
     if (data && data.length > 0) {
         console.log('data:', data[0].compra[0])
@@ -65,41 +68,44 @@ const InformacoesScreen = () => {
 
     return (
         <>
-            <View style={styles.container}>
-                <Text style={styles.info}>Informações pessoais</Text>
-                <View style={styles.itemContainer}>
-                    <Text>Nome: {data && data.length > 0 ? data[0].nome : ''}</Text>
-                    <Text>Email: {data && data.length > 0 ? data[0].email : ''}</Text>
-                    <Text>CPF: {data && data.length > 0 ? data[0].cpf : ''}</Text>
+            <ScrollView>
+                <View style={styles.container}>
+                    <TouchableOpacity style={styles.refresh} onPress={handleReload}>
+                        <AntDesign name="reload1" size={20} color="#0D404B" />
+                    </TouchableOpacity>
+
+                    <Text style={styles.info}>Informações pessoais</Text>
+                    <View style={styles.itemContainer}>
+                        <Text>Nome: {data && data.length > 0 ? data[0].nome : ''}</Text>
+                        <Text>Email: {data && data.length > 0 ? data[0].email : ''}</Text>
+                        <Text>CPF: {data && data.length > 0 ? data[0].cpf : ''}</Text>
+                    </View>
                 </View>
-            </View>
-
-            <View style={styles.container}>
-                <Text style={styles.info}>Viagens marcadas</Text>
-                {data && data.length > 0
-                    ? data[0].compra.map((item, index) => {
-                        return (
-                            <View key={index} style={styles.itemContainer}>
-                                <Text>Nome do pacote: {item.nome}</Text>
-                                <Text>Data: {new Date(item.inicio.seconds * 1000).toLocaleDateString("pt-BR")} - {new Date(item.final.seconds * 1000).toLocaleDateString("pt-BR")}</Text>
-                                <Text>Valor: R$ {item.valor}{'\n'}</Text>
-
-                                <Text>Hotel: {item.hotel.nome} {'\n'}</Text>
-                                <Text>Pontos Turísticos:</Text> 
-                                {item.ponto.map((item, index) => (
-                                    <Text key={index}>
-                                        {index > 0 ? '' : ''}
-                                        &bull; {item}
-                                    </Text>
-                                ))}
-                                
-                                {index !== data[0].compra.length - 1 && <View style={styles.separator} />}
-                            </View>
-                        );
-                    })
-                    : <Text>Não há dados disponíveis para exibir.</Text>
-                }
-            </View>
+                <View style={styles.container}>
+                    <Text style={styles.info}>Viagens marcadas</Text>
+                    {data && data.length > 0
+                        ? data[0].compra.map((item, index) => {
+                            return (
+                                <View key={index} style={styles.itemContainer}>
+                                    <Text>Nome do pacote: {item.nome}</Text>
+                                    <Text>Data: {new Date(item.inicio.seconds * 1000).toLocaleDateString("pt-BR")} - {new Date(item.final.seconds * 1000).toLocaleDateString("pt-BR")}</Text>
+                                    <Text>Valor: R$ {item.valor}{'\n'}</Text>
+                                    <Text>Hotel: {item.hotel.nome} {'\n'}</Text>
+                                    <Text>Pontos Turísticos:</Text>
+                                    {item.ponto.map((item, index) => (
+                                        <Text key={index}>
+                                            {index > 0 ? '' : ''}
+                                            &bull; {item}
+                                        </Text>
+                                    ))}
+                                    {index !== data[0].compra.length - 1 && <View style={styles.separator} />}
+                                </View>
+                            );
+                        })
+                        : <Text>Não há dados disponíveis para exibir.</Text>
+                    }
+                </View>
+            </ScrollView>
         </>
     );
 };
@@ -118,8 +124,12 @@ const styles = StyleSheet.create({
         shadowRadius: 11,
         borderRadius: 10,
         elevation: 5,
+        marginBottom: 10,
     },
-
+    refresh: {
+        alignSelf: 'flex-end',
+        marginBottom: -20,
+    },
     info: {
         fontStyle: 'normal',
         fontWeight: '700',

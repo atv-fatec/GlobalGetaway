@@ -3,11 +3,14 @@ import { collection, getDocs, query, orderBy, doc, deleteDoc } from "firebase/fi
 import React, { useState, useEffect, useCallback } from 'react';
 import MenuScreen from '../components/Menu';
 import { db } from '../configs/index';
+import { AntDesign } from '@expo/vector-icons';
 
 const HoteisScreen = ({ navigation }) => {
     const [data, setData] = useState();
 
     const [filteredData, setFilteredData] = useState([]);
+
+    const [reloadKey, setReloadKey] = useState(0);
 
     const [openedMenu, setOpenedMenu] = useState(Array(data?.length).fill(false));
 
@@ -26,6 +29,10 @@ const HoteisScreen = ({ navigation }) => {
         });
 
         setFilteredData(filtered);
+    };
+
+    const handleReload = () => {
+        setReloadKey((prevKey) => prevKey + 1); // Atualize o estado reloadKey para um novo valor
     };
 
     const handleMenuPress = (index) => {
@@ -76,7 +83,7 @@ const HoteisScreen = ({ navigation }) => {
 
     useEffect(() => {
         findAllPostInStorage();
-    }, []);
+    }, [findAllPostInStorage, reloadKey]);
 
     console.log(data);
 
@@ -130,6 +137,10 @@ const HoteisScreen = ({ navigation }) => {
 
                 <TouchableOpacity onPress={criarHotel} style={styles.button}>
                     <Text style={styles.buttonText}>Novo +</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.refresh} onPress={handleReload}>
+                    <AntDesign name="reload1" size={20} color="#0D404B" />
                 </TouchableOpacity>
             </View>
 
@@ -214,7 +225,7 @@ const styles = StyleSheet.create({
     },
 
     button: {
-        width: '25%',
+        width: '18%',
         backgroundColor: '#61C3C6',
         height: 40,
         borderRadius: 5,

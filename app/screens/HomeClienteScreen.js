@@ -64,7 +64,7 @@ const HomeClienteScreen = () => {
         findAllPostInStorage();
 
         findAllPontoInStorage();
-    }, []);
+    }, [findAllPostInStorage, findAllPontoInStorage]);
 
 
     const renderItem = ({ item }) => (

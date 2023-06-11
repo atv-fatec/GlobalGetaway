@@ -139,24 +139,31 @@ const CriarPontoScreen = ({ route }) => {
         <ScrollView>
 
             <View style={styles.container}>
+                <Text style={styles.label}>Nome</Text>
+
                 <TextInput
                     style={styles.input}
-                    placeholder="Nome"
+                    placeholder="Insira o nome do ponto turístico"
                     defaultValue={route?.params?.nome}
                     onChangeText={(text) => setPonto({ ...ponto, nome: text })}
                 />
 
+                <Text style={styles.label}>Descrição</Text>
+
                 <TextInput
                     style={styles.input}
-                    placeholder="Descrição"
+                    placeholder="Insira a descrição do ponto turístico"
                     defaultValue={route?.params?.descricao}
                     onChangeText={(text) => setPonto({ ...ponto, descricao: text })}
                 />
+
+                <Text style={styles.label}>Categorias</Text>
 
                 <View style={{ zIndex: 900 }}>
                     <DropdownPicker
                         style={styles.input}
                         schema={{ label: 'label', value: 'value' }}
+                        placeholder="Selecione as categorias do ponto turístico"
                         multiple={true}
                         min={1}
                         max={50}
@@ -168,23 +175,27 @@ const CriarPontoScreen = ({ route }) => {
                     />
                 </View>
 
+                <Text style={styles.label}>Estado</Text>
+
                 <TextInput
                     style={styles.input}
-                    placeholder="Estado"
+                    placeholder="Insira o estado do ponto turístico"
                     defaultValue={route?.params?.estado}
                     onChangeText={(text) => setPonto({ ...ponto, estado: text })}
                 />
 
+                <Text style={styles.label}>Cidade</Text>
+
                 <TextInput
                     style={styles.input}
-                    placeholder="Cidade"
+                    placeholder="Insira a cidade do ponto turístico"
                     defaultValue={route?.params?.cidade}
                     onChangeText={(text) => setPonto({ ...ponto, cidade: text })}
                 />
 
                 <TouchableOpacity style={styles.botao} onPress={pickImage}>
                     <AntDesign name="picture" size={20} color="black" />
-                    <Text style={{ fontSize: 20 }}>Adicionar Imagens</Text>
+                    <Text style={{ fontSize: 18 }}>Adicionar Imagens</Text>
                 </TouchableOpacity>
 
                 {route?.params?.id
@@ -211,21 +222,32 @@ const styles = StyleSheet.create({
         borderColor: '#87DEB1',
         borderRadius: 4,
         padding: 10,
-        marginVertical: 10,
+        marginVertical: 5,
         width: '100%',
     },
 
     botao: {
-        borderWidth: 2.5,
-        borderColor: '#87DEB1',
+        alignSelf: 'flex-end',
         alignItems: 'center',
         justifyContent: 'space-evenly',
         flexDirection: 'row',
         height: 35,
         width: '60%',
         borderRadius: 5,
-        marginBottom: 10
-    }
+        marginBottom: 20,
+        borderBottomColor: '#87DEB1',
+        borderBottomWidth: 2.5,
+    },
+
+    label: {
+        alignSelf: 'flex-start',
+        fontStyle: 'normal',
+        fontWeight: '500',
+        fontSize: 20,
+        lineHeight: 24,
+        color: '#0D404B',
+        marginTop: 10,
+    },
 });
 
 export default CriarPontoScreen;
