@@ -36,6 +36,8 @@ const LoginScreen = () => {
                 const prevUser = authFirebase.currentUser;
                 const nivelUser = await GetDocUsuario(String(prevUser?.uid)).then((res) => res)
 
+                setValue({email: '', password: ''})
+
                 if (nivelUser === 1) {
                     navigate.navigate("Home");
                 }

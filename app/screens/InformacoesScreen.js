@@ -1,12 +1,15 @@
 import { arrayUnion, collection, doc, getDocs, onSnapshot, query, updateDoc, where } from 'firebase/firestore';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
+import { useNavigation } from "@react-navigation/native";
+import { AntDesign } from '@expo/vector-icons';
 import { useAuthentication } from '../hooks';
 import { db } from '../configs';
-import { AntDesign } from '@expo/vector-icons';
 
 const InformacoesScreen = () => {
     const { user } = useAuthentication()
+    
+    const navigate = useNavigation();
 
     const [data, setData] = useState();
     const [loading, setLoading] = useState(true);
@@ -69,11 +72,19 @@ const InformacoesScreen = () => {
     return (
         <>
             <ScrollView>
-                <View style={styles.container}>
+                <View style={styles.containeropt}>
                     <TouchableOpacity style={styles.refresh} onPress={handleReload}>
                         <AntDesign name="reload1" size={20} color="#0D404B" />
+                        <Text style={{ color: '#0D404B' }}> Atualizar</Text>
                     </TouchableOpacity>
 
+                    <TouchableOpacity style={styles.refresh} onPress={() => navigate.navigate('Login')}>
+                        <AntDesign name="logout" size={20} color="#0D404B" />
+                        <Text style={{ color: '#0D404B' }}> Sair</Text>
+                    </TouchableOpacity>
+                </View>
+
+                <View style={styles.container}>
                     <Text style={styles.info}>Informações pessoais</Text>
                     <View style={styles.itemContainer}>
                         <Text>Nome: {data && data.length > 0 ? data[0].nome : ''}</Text>
@@ -111,6 +122,22 @@ const InformacoesScreen = () => {
 };
 
 const styles = StyleSheet.create({
+    containeropt: {
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        width: 310,
+        alignItems: 'flex-start',
+        left: 25,
+        marginTop: 10,
+        padding: 10,
+        backgroundColor: '#FFFFFF',
+        shadowColor: '#757575',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.25,
+        shadowRadius: 11,
+        borderRadius: 10,
+        elevation: 5,
+    },
     container: {
         width: 310,
         alignItems: 'flex-start',
@@ -127,8 +154,8 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     refresh: {
+        flexDirection: 'row',
         alignSelf: 'flex-end',
-        marginBottom: -20,
     },
     info: {
         fontStyle: 'normal',
