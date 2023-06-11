@@ -72,7 +72,9 @@ const CriarPontoScreen = ({ route }) => {
         });
     }
 
-    const editarDados = () => {
+    const editarDados = async () => {
+        const renderUploadImages = await uploadImage(images)
+
         const refDB = doc(db, `pontos/${route?.params?.id}`)
 
         if (ponto.nome.length === 0) {
@@ -95,12 +97,16 @@ const CriarPontoScreen = ({ route }) => {
             setValue(route?.params?.categoria)
         }
 
-        updateDoc(refDB, {
+        await updateDoc(refDB, {
             nome: ponto.nome || route?.params?.nome,
             descricao: ponto.descricao || route?.params?.descricao,
             categoria: value || route?.params?.categoria,
             estado: ponto.estado || route?.params?.estado,
             cidade: ponto.cidade || route?.params?.cidade,
+            imgs: images.length > 0 ? renderUploadImages?.map((i) => ({
+                id: i.id,
+                url: i.url
+            })) : route?.params?.images
         }).then(() => {
             navigation.navigate('Home')
         }).catch((err) => {

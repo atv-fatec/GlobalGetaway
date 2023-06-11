@@ -97,6 +97,8 @@ const HoteisScreen = ({ navigation }) => {
                         nome: item.body.nome,
                         cidade: item.body.cidade,
                         estado: item.body.estado,
+                        rating: item.body.rating,
+                        images: item.body.imgs,
                     })}
                     onDelete={() => handleDelete(item.id)}
                 />

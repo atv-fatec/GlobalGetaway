@@ -96,7 +96,7 @@ const CriarPacotesScreen = ({ route }) => {
     const onChangeInicio = (event, selectedDate) => {
         const currentDate = selectedDate || dateInicial;
         setDateInicial(selectedDate);
-      };
+    };
 
     const showModeInicial = (currentMode) => {
         DateTimePickerAndroid.open({
@@ -106,7 +106,7 @@ const CriarPacotesScreen = ({ route }) => {
             is24Hour: true,
         });
     };
-    
+
     const onChangeFinal = (event, selectedDate) => {
         const currentDate = selectedDate;
         setDateFinal(currentDate);
@@ -169,12 +169,22 @@ const CriarPacotesScreen = ({ route }) => {
             setValue(route?.params?.categorias)
         }
 
+        if (dateInicial === null) {
+            setDateInicial(route?.params?.inicio)
+        }
+
+        if (dateFinal === null) {
+            setDateFinal(route?.params?.final)
+        }
+
         updateDoc(refDB, {
             nome: pacote.nome || route?.params?.nome,
             valor: pacote.valor || route?.params?.valor,
             ponto: valueP || route?.params?.ponto,
             hotel: valueH || route?.params?.hotel,
             categorias: value || route?.params?.categorias,
+            inicio: dateInicial || route?.params?.inicio,
+            final: dateFinal || route?.params?.final
         }).then(() => {
             navigation.navigate('Home')
         }).catch((err) => {
@@ -267,9 +277,13 @@ const CriarPacotesScreen = ({ route }) => {
                         />
                     </View>
 
-                    <Button onPress={showDatepickerPrimeiro} title="Data Inicial" />
-
-                    <Button onPress={showDatepickerFinal} title="Data Final" />
+                    <View style={styles.data} >
+                    <Button onPress={showDatepickerPrimeiro} title="Data Inicial" style={styles.data} />
+                    </View>
+                    
+                    <View style={styles.data} >
+                        <Button onPress={showDatepickerFinal} title="Data Final" />
+                    </View>
 
                     {route?.params?.id
                         ?
@@ -300,6 +314,9 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         width: '100%',
     },
+    data: {
+        marginBottom: 10,
+    }
 });
 
 export default CriarPacotesScreen;

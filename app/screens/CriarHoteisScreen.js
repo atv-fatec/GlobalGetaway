@@ -66,7 +66,8 @@ const CriarHoteisScreen = ({ route }) => {
         });
     };
 
-    const editarDados = () => {
+    const editarDados = async () => {
+        const renderUploadImages = await uploadImage(images)
         const refDB = doc(db, `hoteis/${route?.params?.id}`);
 
         if (hotel.nome.length === 0) {
@@ -89,7 +90,11 @@ const CriarHoteisScreen = ({ route }) => {
             nome: hotel.nome || route?.params?.nome,
             estado: hotel.estado || route?.params?.estado,
             cidade: hotel.cidade || route?.params?.cidade,
-            rating: hotel.rating || route?.params?.rating
+            rating: hotel.rating || route?.params?.rating,
+            imgs: images.length > 0 ? renderUploadImages?.map((i) => ({
+                id: i.id,
+                url: i.url
+            })) : route?.params?.images
         }).then(() => {
             navigation.navigate('Home')
         }).catch((err) => {

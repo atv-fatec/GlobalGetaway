@@ -99,6 +99,7 @@ const PontosScreen = ({ navigation }) => {
                         categoria: item.body.categoria,
                         estado: item.body.estado,
                         cidade: item.body.cidade,
+                        images: item.body.imgs,
                     })}
                     onDelete={() => handleDelete(item.id)}
                 />
