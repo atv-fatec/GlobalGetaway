@@ -123,7 +123,10 @@ const PacotesScreen = ({ navigation }) => {
                         nome: item.body.nome,
                         valor: item.body.valor,
                         hotel: item.body.hotel,
-                        ponto: item.body.ponto
+                        ponto: item.body.ponto,
+                        categorias: item.body.categorias,
+                        inicio: item.body.inicio,
+                        final: item.body.final,
                     })}
                     onDelete={() => handleDelete(item.id)}
                 />

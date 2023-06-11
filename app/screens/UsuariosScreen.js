@@ -7,7 +7,30 @@ import MenuScreen from '../components/Menu';
 const UsuariosScreen = ({ navigation }) => {
     const [data, setData] = useState();
 
+    console.log(data);
+
+    const [filteredData, setFilteredData] = useState([]);
+
     const [openedMenu, setOpenedMenu] = useState(Array(data?.length).fill(false));
+
+    const filterData = (searchText) => {
+        if (!data) {
+            return;
+        }
+
+        const filtered = data.filter((item) => {
+            const lowerCaseSearchText = searchText.toLowerCase();
+
+            const nomeMatch = item?.body?.nome?.toLowerCase()?.includes(lowerCaseSearchText);
+            const emailMatch = item?.body?.email?.toLowerCase()?.includes(lowerCaseSearchText);
+            const cpfMatch = String(item?.body?.cpf)?.toLowerCase()?.includes(lowerCaseSearchText);
+            const nivelMatch = String(item?.body?.nivel)?.toLowerCase()?.includes(lowerCaseSearchText);
+
+            return nomeMatch || emailMatch || cpfMatch || nivelMatch;
+        });
+
+        setFilteredData(filtered);
+    };
 
     const findAllPostInStorage = useCallback(
         async () => {
@@ -68,7 +91,7 @@ const UsuariosScreen = ({ navigation }) => {
                 <TouchableOpacity onPress={() => handleMenuPress(index)}>
                     <Text style={styles.text}>{index + 1}</Text>
                 </TouchableOpacity>
-                
+
                 <MenuScreen key={index} menu={openedMenu[index]}
                     onMenuPress={() => handleMenuPress(index)}
                     onDelete={() => handleDelete(item.id)}
@@ -99,6 +122,8 @@ const UsuariosScreen = ({ navigation }) => {
                 <TextInput
                     style={styles.input}
                     placeholder="Pesquisar"
+                    onChangeText={filterData}
+                    value={filteredData}
                 />
             </View>
 
@@ -126,7 +151,7 @@ const UsuariosScreen = ({ navigation }) => {
                 </View>
 
                 <FlatList
-                    data={data}
+                    data={filteredData.length > 0 ? filteredData : data}
                     renderItem={renderItem}
                     keyExtractor={(item) => item.id.toString()}
                 />

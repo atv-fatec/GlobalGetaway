@@ -6,6 +6,7 @@ import { db } from '../configs/index';
 
 const PontosScreen = ({ navigation }) => {
     const [data, setData] = useState();
+
     const [filteredData, setFilteredData] = useState([]);
     const [openedMenu, setOpenedMenu] = useState(Array(data?.length).fill(false));
 

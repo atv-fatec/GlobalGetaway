@@ -76,8 +76,10 @@ const CriarPacotesScreen = ({ route }) => {
         valor: ''
     })
 
-    const [dateInicial, setDateInicial] = useState(new Date());
-    const [dateFinal, setDateFinal] = useState(new Date());
+    const [dateInicial, setDateInicial] = useState(route?.params?.inicio || new Date());
+    const [dateFinal, setDateFinal] = useState(route?.params?.final || new Date());
+
+    console.log(dateInicial, dateFinal, "dataaaaaaas");
 
     const [openP, setOpenP] = useState(false);
     const [openH, setOpenH] = useState(false);
@@ -85,7 +87,7 @@ const CriarPacotesScreen = ({ route }) => {
 
     const [value, setValue] = useState(route?.params?.categorias || []);
     const [valueP, setValueP] = useState(route?.params?.ponto || []);
-    const [valueH, setValueH] = useState(route?.params?.hotel || null);
+    const [valueH, setValueH] = useState(route?.params?.hotel || {});
 
     const [items, setItems] = useState([
         { label: 'Item 1', value: 'item1' },
@@ -100,7 +102,7 @@ const CriarPacotesScreen = ({ route }) => {
 
     const showModeInicial = (currentMode) => {
         DateTimePickerAndroid.open({
-            value: dateInicial,
+            value: new Date(dateInicial),
             onChange: onChangeInicio,
             mode: currentMode,
             is24Hour: true,
@@ -114,7 +116,7 @@ const CriarPacotesScreen = ({ route }) => {
 
     const showModeFinal = (currentMode) => {
         DateTimePickerAndroid.open({
-            value: dateFinal,
+            value: new Date(dateFinal),
             onChange: onChangeFinal,
             mode: currentMode,
             is24Hour: true,
@@ -277,13 +279,21 @@ const CriarPacotesScreen = ({ route }) => {
                         />
                     </View>
 
-                    <View style={styles.data} >
-                    <Button onPress={showDatepickerPrimeiro} title="Data Inicial" style={styles.data} />
-                    </View>
-                    
-                    <View style={styles.data} >
-                        <Button onPress={showDatepickerFinal} title="Data Final" />
-                    </View>
+                    {route?.params?.id
+                        ?
+                        null
+                        :
+                        <>
+                            <View style={styles.data} >
+                                <Button onPress={showDatepickerPrimeiro} title="Data Inicial" style={styles.data} />
+                            </View>
+
+                            <View style={styles.data} >
+                                <Button onPress={showDatepickerFinal} title="Data Final" />
+                            </View>
+                        </>
+                    }
+
 
                     {route?.params?.id
                         ?
