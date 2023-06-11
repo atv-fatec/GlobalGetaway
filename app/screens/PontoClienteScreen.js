@@ -35,7 +35,7 @@ const PontoClienteScreen = () => {
                     </View>
 
                     <View style={styles.box_ponto} >
-                        <TouchableOpacity style={styles.button} onPress={() => navigate.navigate('PacoteCliente')}>
+                        <TouchableOpacity style={styles.button} onPress={() => navigate.navigate('PacotesPorPonto', { ...route.params })}>
                             <Text style={styles.buttonText}>Veja os pacotes</Text>
                         </TouchableOpacity>
                     </View>

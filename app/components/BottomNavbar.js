@@ -6,6 +6,7 @@ import HomeScreen from '../screens/HomeScreen';
 import PontosScreen from '../screens/PontosScreen';
 import HoteisScreen from '../screens/HoteisScreen';
 import PacotesScreen from '../screens/PacotesScreen';
+import UsuariosScreen from "../screens/UsuariosScreen"
 
 const Tab = createBottomTabNavigator();
 
@@ -45,6 +46,15 @@ const BottomNavbar = () => {
         options={{
           tabBarIcon: ({ color, size }) => (
             <Icon name="briefcase-outline" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Usuários"
+        component={UsuariosScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="person-outline" color={color} size={size} />
           ),
         }}
       />
