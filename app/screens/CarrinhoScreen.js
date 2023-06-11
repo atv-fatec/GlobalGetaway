@@ -1,5 +1,5 @@
 import { arrayUnion, collection, doc, getDoc, updateDoc } from "@firebase/firestore";
-import { View, Text, StyleSheet, Button } from "react-native";
+import { View, Text, StyleSheet, Button, TextInput } from "react-native";
 import DropdownPicker from "react-native-dropdown-picker";
 import { useNavigation } from "@react-navigation/native";
 import { useRoute } from "@react-navigation/native";
@@ -18,6 +18,20 @@ const CarrinhoScreen = () => {
     const [openP, setOpenP] = useState(false);
     const [formaPagamento, setFormaPagamento] = useState(formaPagamentoOptions);
     const [quantidadeParcelas, setQuantidadeParcelas] = useState(quantidadeParcelasOptions);
+    const [tipoChavePix, setTipoChavePix] = useState(chavePixOptions);
+    const [numCartao, setNumCartao] = useState({
+        numero: ''
+    })
+    const [chavePix, setChavePix] = useState({
+        chave: ''
+    })
+
+    const chavePixOptions = [
+        { label: 'CPF', value: 'cpf' },
+        { label: 'Email', value: 'email' },
+        { label: 'Aleatória', value: 'aleatoria' },
+        { label: 'Telefone', value: 'telefone' },
+    ]
 
     const formaPagamentoOptions = [
         { label: 'Cartão de Crédito', value: 'credito' },
@@ -43,6 +57,9 @@ const CarrinhoScreen = () => {
                 inicio: router.params.inicio,
                 metodo: formaPagamento,
                 parcelas: quantidadeParcelas || null,
+                tipoChave: tipoChavePix || null,
+                chavePix: chavePix.chave || null,
+                numeroCartao: numCartao.numero || null,
                 valor: router.params.valor,
                 hotel: {
                     nome: router.params.hotel.nome,
@@ -81,6 +98,20 @@ const CarrinhoScreen = () => {
                     />
                 </View>
 
+                {formaPagamento === 'debito' ?
+                    <>
+                        <Text style={styles.label}>Número do cartão</Text>
+
+                        <TextInput
+                            style={styles.inputtext}
+                            placeholder="Insira o número do cartão"
+                            onChangeText={(text) => setNumCartao({ ...numCartao, numero: text })}
+                            keyboardType="numeric"
+                        />
+                    </>
+                    : null
+                }
+
                 {formaPagamento === 'credito' ?
                     <>
                         <Text style={styles.label}>Parcelas</Text>
@@ -101,6 +132,43 @@ const CarrinhoScreen = () => {
                                 setOpen={setOpenP}
                             />
                         </View>
+                        <Text style={styles.label}>Número do cartão</Text>
+
+                        <TextInput
+                            style={styles.inputtext}
+                            placeholder="Insira o número do cartão"
+                            onChangeText={(text) => setNumCartao({ ...numCartao, numero: text })}
+                            keyboardType="numeric"
+                        />
+                    </>
+                    : null
+                }
+
+                {formaPagamento === 'pix' ?
+                    <>
+                        <Text style={styles.label}>Chave PIX</Text>
+
+                        <View style={{ zIndex: 800 }}>
+                            <DropdownPicker
+                                placeholder="Selecione o tipo da chave pix"
+                                schema={{ label: 'label', value: 'value' }}
+                                style={styles.input}
+                                multiple={false}
+                                min={1}
+                                max={50}
+                                open={openP}
+                                setValue={setTipoChavePix}
+                                value={tipoChavePix}
+                                zIndex={100}
+                                items={chavePixOptions?.map(item => ({ label: item?.label, value: item?.value })) || []}
+                                setOpen={setOpenP}
+                            />
+                        </View>
+                        <TextInput
+                            style={styles.inputtext}
+                            placeholder="Insira a chave PIX"
+                            onChangeText={(text) => setChavePix({ ...chavePix, chave: text })}
+                        />
                     </>
                     : null
                 }
@@ -126,6 +194,15 @@ const styles = StyleSheet.create({
         padding: 10,
         marginVertical: 10,
         width: "100%",
+    },
+
+    inputtext:{
+        borderWidth: 2,
+        borderColor: "#46ADD6",
+        borderRadius: 4,
+        padding: 10,
+        marginVertical: 10,
+        width: 320,
     },
 
     label: {
