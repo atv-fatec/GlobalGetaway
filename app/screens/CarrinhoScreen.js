@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         padding: 10,
         marginVertical: 10,
-        width: 355,
+        width: "100%",
     },
 
     label: {

@@ -235,11 +235,11 @@ const styles = StyleSheet.create({
         margin: 10,
     },
     input: {
-        width: '80%',
+        width: '90%',
         height: 40,
         marginRight: 10,
         borderWidth: 2,
-        borderColor: '#46ADD6',
+        borderColor: '#0191B6',
         borderRadius: 5,
         paddingLeft: 10,
     },

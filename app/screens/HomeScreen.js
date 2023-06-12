@@ -26,7 +26,7 @@ const HomeScreen = () => {
                     <Text style={styles.buttonText}>Pacotes</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.button3} onPress={() => navigate.navigate('Usuario')}>
+                <TouchableOpacity style={styles.button4} onPress={() => navigate.navigate('Usuario')}>
                     <Text style={styles.buttonText}>Usuários</Text>
                 </TouchableOpacity>
             </View>
@@ -79,6 +79,16 @@ const styles = StyleSheet.create({
 
     button3: {
         backgroundColor: '#46ADD6',
+        height: 50,
+        borderRadius: 5,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 10,
+        padding: 10,
+    },
+
+    button4: {
+        backgroundColor: '#0191B6',
         height: 50,
         borderRadius: 5,
         justifyContent: 'center',
