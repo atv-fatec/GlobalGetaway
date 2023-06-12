@@ -105,38 +105,38 @@ const CriarHoteisScreen = ({ route }) => {
     return (
         <View style={styles.container}>
 
-            <Text style={styles.label}>Senha</Text>
+            <Text style={styles.label}>Nome</Text>
 
             <TextInput
                 style={styles.input}
-                placeholder="Nome"
+                placeholder="Insira o nome do hotel"
                 defaultValue={route?.params?.nome}
                 onChangeText={(text) => setHotel({ ...hotel, nome: text })}
             />
 
-            <Text style={styles.label}>Senha</Text>
+            <Text style={styles.label}>Estado</Text>
 
             <TextInput
                 style={styles.input}
-                placeholder="Estado"
+                placeholder="Insira o estado do hotel"
                 defaultValue={route?.params?.estado}
                 onChangeText={(text) => setHotel({ ...hotel, estado: text })}
             />
 
-            <Text style={styles.label}>Senha</Text>
+            <Text style={styles.label}>Cidade</Text>
 
             <TextInput
                 style={styles.input}
-                placeholder="Cidade"
+                placeholder="Insira a cidade do hotel"
                 defaultValue={route?.params?.cidade}
                 onChangeText={(text) => setHotel({ ...hotel, cidade: text })}
             />
 
-            <Text style={styles.label}>Senha</Text>
+            <Text style={styles.label}>Classificação</Text>
 
             <TextInput
                 style={styles.input}
-                placeholder="Classificação"
+                placeholder="Insira a classificação do hotel"
                 defaultValue={route?.params?.rating}
                 keyboardType="numeric"
                 onChangeText={(text) => setHotel({ ...hotel, rating: text })}

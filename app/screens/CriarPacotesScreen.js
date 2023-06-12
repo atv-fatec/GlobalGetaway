@@ -277,7 +277,7 @@ const CriarPacotesScreen = ({ route }) => {
 
                     <Text style={styles.label}>Categorias</Text>
 
-                    <View style={{ zIndex: 900 }}>
+                    <View style={{ zIndex: 1000 }}>
                         <DropdownPicker
                             style={styles.input}
                             schema={{ label: 'label', value: 'value' }}

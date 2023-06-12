@@ -18,31 +18,24 @@ const InformacoesScreen = () => {
     const getUserInfo = useCallback(async (uid) => {
         const usuariosRef = collection(db, 'usuarios');
         const q = query(usuariosRef, where('id', '==', uid));
+        const querySnapshot = await getDocs(q);
+        const userData = [];
 
-        try {
-            const querySnapshot = await getDocs(q);
-            const userData = [];
+        querySnapshot.forEach((doc) => {
+            userData.push(doc.data());
+        });
 
-            querySnapshot.forEach((doc) => {
-                userData.push(doc.data());
-            });
-
-            return userData;
-        } catch (error) {
-            console.error('Erro ao obter informações do usuário:', error);
-            return null;
-        }
+        return userData;
     }, []);
 
     useEffect(() => {
-        if (user?.uid != null) {
+        if (user?.uid !== undefined) {
             setLoading(true); // Define o estado de loading como true ao iniciar a consulta
 
             getUserInfo(user?.uid).then((userData) => {
-                console.log('userData:', userData);
                 setData(userData);
             }).catch((error) => {
-                console.error('Erro ao obter informações do usuário:', error);
+                console.log('Erro ao obter informações do usuário:', error);
             }).finally(() => {
                 setLoading(false); // Define o estado de loading como false ao concluir a consulta
             });
@@ -52,10 +45,6 @@ const InformacoesScreen = () => {
     const handleReload = () => {
         setReloadKey((prevKey) => prevKey + 1); // Atualize o estado reloadKey para um novo valor
     };
-
-    if (data && data.length > 0) {
-        console.log('data:', data[0].compra[0])
-    }
 
     if (loading) {
         return (
@@ -99,16 +88,16 @@ const InformacoesScreen = () => {
                 </View>
                 <View style={styles.container}>
                     <Text style={styles.info}>Viagens marcadas</Text>
-                    {data && data.length > 0
-                        ? data[0].compra.map((item, index) => {
+                    {data && data?.length > 0
+                        ? data[0].compra?.map((item, index) => {
                             return (
                                 <View key={index} style={styles.itemContainer}>
-                                    <Text>Nome do pacote: {item.nome}</Text>
-                                    <Text>Data: {new Date(item.inicio.seconds * 1000).toLocaleDateString("pt-BR")} - {new Date(item.final.seconds * 1000).toLocaleDateString("pt-BR")}</Text>
+                                    <Text>Nome do pacote: {item?.nome}</Text>
+                                    <Text>Data: {new Date(item?.inicio?.seconds * 1000).toLocaleDateString("pt-BR")} - {new Date(item?.final?.seconds * 1000).toLocaleDateString("pt-BR")}</Text>
                                     <Text>Valor: R$ {item.valor}{'\n'}</Text>
                                     <Text>Hotel: {item.hotel.nome} {'\n'}</Text>
                                     <Text>Pontos Turísticos:</Text>
-                                    
+
                                     {item.ponto.map((item, index) => (
                                         <Text key={index}>
                                             {index > 0 ? '' : ''}
@@ -120,7 +109,7 @@ const InformacoesScreen = () => {
                                 </View>
                             );
                         })
-                        : <Text>Não há dados disponíveis para exibir.</Text>
+                        : <View style={styles.itemContainer}><Text>Não há dados disponíveis para exibir.</Text></View>
                     }
                 </View>
             </ScrollView>

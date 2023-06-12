@@ -8,7 +8,7 @@ import { db } from '../configs';
 
 const WishListScreen = () => {
     const { user } = useAuthentication()
-    
+
     const navigate = useNavigation();
 
     const [data, setData] = useState();
@@ -52,10 +52,6 @@ const WishListScreen = () => {
         setReloadKey((prevKey) => prevKey + 1); // Atualize o estado reloadKey para um novo valor
     };
 
-    if (data && data.length > 0) {
-        console.log('data:', data[0].wishList[0].nome)
-    }
-
     if (loading) {
         return (
             console.log('Carregando dados...')
@@ -85,33 +81,32 @@ const WishListScreen = () => {
 
                 <View style={styles.container}>
                     <Text style={styles.info}>Viagens salvas</Text>
-                    {data && data.length > 0
-                        ? data[0].wishList.map((item, index) => {
+                    {data && data?.length > 0
+                        ? data[0].wishList?.map((item, index) => {
                             return (
                                 <View key={index} style={styles.itemContainer}>
                                     <Text>Nome do pacote: {item.nome}</Text>
                                     <Text>Data: {new Date(item.inicio.seconds * 1000).toLocaleDateString("pt-BR")} - {new Date(item.final.seconds * 1000).toLocaleDateString("pt-BR")}</Text>
                                     <Text>Valor: R$ {item.valor}{'\n'}</Text>
-                        
+
 
                                     <View style={styles.botaoopt}>
-                                    <TouchableOpacity style={styles.refresh} onPress={() => navigate.navigate('PacoteCliente', { body: item })}> 
-                                        <AntDesign name="eye" size={20} color="#0D404B" />
-                                        <Text style={{ color: '#0D404B' }}> Ver mais!</Text>
-                                    </TouchableOpacity>
+                                        <TouchableOpacity style={styles.refresh} onPress={() => navigate.navigate('PacoteCliente', { body: item })}>
+                                            <AntDesign name="eye" size={20} color="#0D404B" />
+                                            <Text style={{ color: '#0D404B' }}> Ver mais!</Text>
+                                        </TouchableOpacity>
 
-                                    <TouchableOpacity style={styles.refresh} onPress={() =>  navigate.navigate('Carrinho', { ...item })}> 
-                                        <AntDesign name="shoppingcart" size={20} color="#0D404B" />
-                                        <Text style={{ color: '#0D404B' }}> Comprar!</Text>
-                                    </TouchableOpacity>
-
+                                        <TouchableOpacity style={styles.refresh} onPress={() => navigate.navigate('Carrinho', { ...item })}>
+                                            <AntDesign name="shoppingcart" size={20} color="#0D404B" />
+                                            <Text style={{ color: '#0D404B' }}> Comprar!</Text>
+                                        </TouchableOpacity>
                                     </View>
-                                   
+
                                     {index !== data[0].wishList.length - 1 && <View style={styles.separator} />}
                                 </View>
                             );
                         })
-                        : <Text>Não há dados disponíveis para exibir.</Text>
+                        : <View style={styles.itemContainer}><Text>Não há dados disponíveis para exibir.</Text></View>
                     }
                 </View>
             </ScrollView>
