@@ -4,6 +4,7 @@ import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import { View, Text, TextInput, TouchableOpacity, Button, StyleSheet } from 'react-native';
 import { db } from '../configs';
 import { doc, setDoc } from '@firebase/firestore';
+import { Alert } from 'react-native';
 
 const SignUpScreen = ({ navigation }) => {
     const [value, setValue] = useState({
@@ -32,6 +33,8 @@ const SignUpScreen = ({ navigation }) => {
                     cpf: value.cpf,
                     nivel: 2
                 }).then(() => {
+                    Alert.alert("Conta criada!",  "Conta criada com sucesso." , [{text: "OK!", style: "cancel"}])
+
                     navigation.navigate('Login')
                 }).catch((err) => {
                     console.log(err)

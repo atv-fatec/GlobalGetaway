@@ -1,5 +1,5 @@
 import { arrayUnion, collection, doc, getDoc, updateDoc } from "@firebase/firestore";
-import { View, Text, StyleSheet, Button, TextInput } from "react-native";
+import { View, Text, StyleSheet, Button, TextInput, Alert } from "react-native";
 import DropdownPicker from "react-native-dropdown-picker";
 import { useNavigation } from "@react-navigation/native";
 import { useRoute } from "@react-navigation/native";
@@ -13,6 +13,8 @@ const CarrinhoScreen = () => {
     const navigation = useNavigation();
 
     const router = useRoute()
+
+    console.log(router.params.nome)
 
     const [open, setOpen] = useState(false);
     const [openP, setOpenP] = useState(false);
@@ -70,6 +72,8 @@ const CarrinhoScreen = () => {
                 final: router.params.final
             })
         }).then(() => {
+            Alert.alert("Compra finalizada!",  "O pacote foi adquirido com sucesso. Obrigada pela preferência!" , [{text: "OK!", style: "cancel"}])
+
             navigation.navigate('Principal')
         }).catch((err) => {
             console.log(err)
@@ -202,11 +206,10 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         padding: 10,
         marginVertical: 10,
-        width: 320,
+        width: 355,
     },
 
     label: {
-        marginStart: 40,
         alignSelf: 'flex-start',
         fontStyle: 'normal',
         fontWeight: '500',

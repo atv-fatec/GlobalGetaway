@@ -1,29 +1,52 @@
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Alert } from 'react-native';
+import { arrayUnion, collection, doc, updateDoc } from 'firebase/firestore';
 import { useNavigation } from "@react-navigation/native";
 import { useRoute } from "@react-navigation/native";
-import React, { useEffect, useState } from 'react';
 import { Carrossel } from '../components/Carrossel';
+import React, { useEffect, useState } from 'react';
+import { useAuthentication } from '../hooks';
+import { db } from '../configs';
 
 const PacoteClienteScreen = () => {
+    const { user } = useAuthentication()
     const navigate = useNavigation();
     const route = useRoute()
 
-    const [ allImgs, setAllImgs ] = useState([])
+    const [allImgs, setAllImgs] = useState([])
 
-    useEffect(() => { 
-        route.params.body.hotel.imgs.forEach((hts) => { setAllImgs((lastItem )=> [...lastItem, hts])})
-        route.params.body.ponto.forEach(pts => pts.imgs.forEach(urls => setAllImgs((lastItem) => [...lastItem, urls]))) 
-     }, [setAllImgs, route])
+    useEffect(() => {
+        route.params.body.hotel.imgs.forEach((hts) => { setAllImgs((lastItem) => [...lastItem, hts]) })
+        route.params.body.ponto.forEach(pts => pts.imgs.forEach(urls => setAllImgs((lastItem) => [...lastItem, urls])))
+    }, [setAllImgs, route])
 
-     const dateInicio = new Date(route.params.body?.inicio.seconds * 1000);
-     const localeDateIncial = dateInicio.toLocaleDateString("pt-BR");
-     const dateFinal = new Date(route.params.body?.final.seconds * 1000);
-     const localDateFinal = dateFinal.toLocaleDateString("pt-BR");
+    const dateInicio = new Date(route.params.body?.inicio.seconds * 1000);
+    const localeDateIncial = dateInicio.toLocaleDateString("pt-BR");
+    const dateFinal = new Date(route.params.body?.final.seconds * 1000);
+    const localDateFinal = dateFinal.toLocaleDateString("pt-BR");
+
+    const wishList = async (pacote) => {
+        const collect = doc(collection(db, "usuarios"), String(user?.uid));
+        console.log(pacote)
+
+        await updateDoc(collect, {
+            wishList: arrayUnion({
+                nome: pacote.nome,
+                inicio: pacote.inicio,
+                hotel: pacote.hotel,
+                ponto: pacote.ponto,
+                valor: pacote.valor,
+                categorias: pacote.categorias,
+                final: pacote.final,
+            })
+        })
+
+        Alert.alert("Pacote salvo!",  "Pacote adicionado a lista de desejos." , [{text: "OK!", style: "cancel"}])
+    }
 
     return (
         <>
             <ScrollView>
-                <Carrossel arrayImages={allImgs}/>
+                <Carrossel arrayImages={allImgs} />
 
                 <Text style={styles.title_ofc}>{route.params.body.nome}</Text>
 
@@ -36,7 +59,7 @@ const PacoteClienteScreen = () => {
                                 {index > 0 ? '\n' : ''}
                                 &bull; {item.nome}
                             </Text>
-                        ))} 
+                        ))}
                     </Text>
                 </View>
 
@@ -70,6 +93,19 @@ const PacoteClienteScreen = () => {
                         <View style={styles.col_botaopacote}>
                             <TouchableOpacity style={styles.button} onPress={() => navigate.navigate('Carrinho', { ...route.params.body })}>
                                 <Text style={styles.buttonText}>Adquira agora!</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity style={styles.buttonwish} onPress={() => wishList({
+                                id: route.params.id,
+                                nome: route.params.body.nome,
+                                inicio: route.params.body.inicio,
+                                hotel: route.params.body.hotel,
+                                ponto: route.params.body.ponto,
+                                valor: route.params.body.valor,
+                                categorias: route.params.body.categorias,
+                                final: route.params.body.final,
+                            })}>
+                                <Text style={styles.buttonText}>Salvar!</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -137,13 +173,26 @@ const styles = StyleSheet.create({
     },
 
     col_precopacote: {
-        width: '30%',
+        width: '20%',
         margin: 5,
     },
 
     col_botaopacote: {
-        width: '70%',
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        width: '80%',
         margin: 5,
+    },
+
+    buttonwish: {
+        backgroundColor: '#FD9B12',
+        width: '30%',
+        height: 50,
+        borderRadius: 5,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 10,
+        padding: 10,
     },
 
     button: {
@@ -154,7 +203,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginBottom: 10,
         padding: 10,
-        width: '70%'
+        width: '50%'
     },
 })
 
